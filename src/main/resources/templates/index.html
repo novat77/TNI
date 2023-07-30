@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head" />
+<body>
+<div th:replace="fragments :: tni_menu" />
+<div class="container tbl-container" >
+	<br>
+	<h3>Dashboard</h3>
+	<br/>
+	<!--<span th:if="${msg != null}" th:text="${msg}"></span>-->
+	<div class="row tbl-fixed">
+		<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+			Launch demo modal
+		</button>-->
+		<a href="#" data-toggle="modal" data-target="#exampleModal">Try Me</a>
+
+		<!-- Modal -->
+		<div th:replace="fragments :: tni_modal" />
+
+	</div>
+</div>
+<div th:replace="fragments :: tni_footer" />
+</body>
+</html>

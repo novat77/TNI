@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: dtv_head" />
+<body>
+<div th:replace="fragments :: dtv_menu" />
+<div align="center"class="container">
+    <h4>All Users</h4>
+    <br>
+
+    <table border="1" cellpadding="10" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Created Date</th>
+            <th sec:authorize="hasAnyAuthority('ADMIN')">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}">Username</td>
+            <!--<td th:each="role, iterStat : ${user.roles}" th:text="${role.name} + ${!iterStat.last ? ', ' : ''}">Roles</td>-->
+            <td><span th:each="role,iterStat : ${user.roles}"
+                  th:text="${role.name} + ${!iterStat.last ? ', ' : ''}"></span></td>
+            <td th:text="${user.createdDate}">Created Date</td>
+            <td><div class="btn-group">
+                <form action="#" th:action="@{'/processUser/' + ${user.id}}" th:object="${user}" method="post">
+                    <div th:if="${user.enabled == true} AND ${user.roles == 'ADMIN'} AND ${user.username == 'admin'}">
+                        <button type="submit" name="action" value="disable" class="btn btn-primary" disabled="disabled">Disable</button>
+                        <button type="submit" name="action" value="delete" class="btn btn-primary" disabled="disabled">Delete</button>
+                    </div>
+                    <div th:if="${user.enabled == true} AND !${user.username == 'admin'}">
+                        <button type="submit" name="action" value="disable" class="btn btn-primary" >Disable</button>
+                        <button type="submit" name="action" value="delete" class="btn btn-primary">Delete</button>
+                    </div>
+                    <div th:if="${user.enabled == false}">
+                        <button type="submit" name="action" value="enable" class="btn btn-primary" >Enable</button>
+                        <button type="submit" name="action" value="delete" class="btn btn-primary">Delete</button>
+                    </div>
+                    <!--<button type="submit" class="btn btn-primary">Delete</button>-->
+                </form>
+            </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="fragments :: dtv_footer" />
+</body>
+</html>

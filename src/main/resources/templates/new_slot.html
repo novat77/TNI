@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head">
+</head>
+<body>
+<div th:replace="fragments :: tni_menu"/>
+<div class="container" style="display: flex; height: 100px;">
+  <div class="tbl-container" style="margin-left: 50px; margin-right: 15px; width: 30%">
+    <h4>Slot</h4>
+    <br/>
+    <form action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post">
+
+      <!--<img src="./img/save.png" alt="..." style="width: 25px; height: 25px" type="submit" name="action" value="single-site"   >
+      <button class="btn" type="submit" name="action" value="single-site"  >
+          <img src="../img/save.png" width="30" />
+      </button>-->
+
+      <table border="0" cellpadding="10" class="table table-striped">
+        <tr>
+          <td><label>Slot Name:</label></td>
+          <td><input class="form-control" type="text" th:field="*{slotName}" aria-describedby="basic-addon3"/>
+            <p th:if="${#fields.hasErrors('slotName')}" th:errorclass="error" th:errors="*{slotName}" /></td>
+        </tr>
+<!--        <tr>-->
+<!--          <td>Parent Shelf Id:</td>-->
+<!--          <td><input class="form-control" type="text" th:field="*{parentShelfId}" aria-describedby="basic-addon3"/>-->
+<!--            <p th:if="${#fields.hasErrors('parentShelfId')}" th:errorclass="error" th:errors="*{parentShelfId}" /></td>-->
+<!--        </tr>-->
+        <tr>
+          <td>Parent Shelf Name:</td>
+          <td><input class="form-control" type="text" th:field="*{parentShelfName}" aria-describedby="basic-addon3"/>
+            <p th:if="${#fields.hasErrors('parentShelfName')}" th:errorclass="error" th:errors="*{parentShelfName}" /></td>
+        </tr>
+<!--        <tr>-->
+<!--          <td>Parent Site Id:</td>-->
+<!--          <td><input class="form-control" type="text" th:field="*{parentSiteId}" aria-describedby="basic-addon3"/>-->
+<!--            <p th:if="${#fields.hasErrors('parentSiteId')}" th:errorclass="error" th:errors="*{parentSiteId}" /></td>-->
+<!--        </tr>-->
+        <tr>
+          <td>Parent Site Name:</td>
+          <td><input class="form-control" type="text" th:field="*{parentSiteName}" aria-describedby="basic-addon3"/>
+            <p th:if="${#fields.hasErrors('parentSiteName')}" th:errorclass="error" th:errors="*{parentSiteName}" /></td>
+        </tr>
+        <input class="form-control" th:value="${#authentication.name}" name="createdBy" type="hidden" />
+      </table>
+      <br/>
+      <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="create-slot" class="btn btn-primary">Create</button></div>
+      <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="search-slot" class="btn btn-primary">Search</button></div>
+    </form>
+  </div>
+  <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%">
+    <table border="1" cellpadding="10" class="table table-striped" th:unless="${error}">
+      <thead>
+      <tr>
+        <th>Slot Name</th>
+        <th>Parent Shelf Id</th>
+        <th>Parent Shelf Name</th>
+        <th>Parent Site Id</th>
+        <th>Parent Site Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="slot : ${slots}">
+        <td>
+          <div th:replace="search_slot :: tni_modal"/>
+          <a href="#" th:text="${slot.slotName}" data-toggle="modal" data-target="#slotModal">Slot Name</a>
+        </td>
+        <td th:text="${slot.parentShelfId}">Parent Shelf Id</td>
+        <td th:text="${slot.parentShelfName}">Parent Shelf Name</td>
+        <td th:text="${slot.parentSiteId}">Parent Site Id</td>
+        <td th:text="${slot.parentSiteName}">Parent Site Name</td>
+      </tr>
+      </tbody>
+    </table>
+    <p th:if="${error}" class="error" th:text="${error}"></p>
+  </div>
+</div>
+<div th:replace="fragments :: tni_footer"/>
+</body>
+</html>

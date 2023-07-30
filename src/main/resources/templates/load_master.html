@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head">
+  <script>
+  </script>
+</head>
+<body>
+<div th:replace="fragments :: tni_menu"></div>
+<div class="container">
+  <h4>Load Master</h4>
+  <form action="#" th:action="@{/loadMaster}" method="post" enctype="multipart/form-data">
+    <table border="0" cellpadding="2" class="table table-bordered">
+      <tr>
+        <td>Select Master File (xlsx):</td>
+        <td><input id="master" name="master" type="file" accept=".xlsx" aria-describedby="basic-addon3"/></td>
+      </tr>
+      <input th:value="${#authentication.name}" name="createdBy" type="hidden" />
+    </table>
+    <div class="btn btn-primary btn-lg"><button type="submit"  class="btn btn-primary">Load Master</button></div>
+  </form>
+  <span th:if="${msg1 != null}" th:text="${msg1}" style="color: red;"></span>
+  <span th:if="${msg2 != null}" th:text="${msg2}" style="color: green;"></span>
+  <div align="center" class="container tbl-container">
+  </div>
+  <div th:replace="fragments :: tni_footer"></div>
+  </div>
+</body>
+</html>
