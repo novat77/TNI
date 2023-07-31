@@ -24,8 +24,6 @@ public class SiteService {
 
     @Autowired
     SiteRepository siteRepository;
-//    @Autowired
-//    SiteMapper siteMapper;
 
     public SiteDto createAndGetSite(SiteDto siteDto) {
 
