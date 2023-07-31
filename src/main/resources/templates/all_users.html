@@ -20,9 +20,9 @@
         <tbody>
         <tr th:each="user : ${users}">
             <td th:text="${user.username}">Username</td>
-            <!--<td th:each="role, iterStat : ${user.roles}" th:text="${role.name} + ${!iterStat.last ? ', ' : ''}">Roles</td>-->
-<!--            <td><span th:each="role,iterStat : ${user.roles}"-->
-<!--                  th:text="${role.name} + ${!iterStat.last ? ', ' : ''}"></span>Roles</td>-->
+            <td th:each="role, iterStat : ${user.roles}" th:text="${role.name} + ${!iterStat.last ? ', ' : ''}">Roles</td>
+            <td><span th:each="role,iterStat : ${user.roles}"
+                  th:text="${role.name} + ${!iterStat.last ? ', ' : ''}"></span>Roles</td>
             <td></td>
             <td th:text="${user.createdDate}">Created Date</td>
             <td><div class="btn-group">

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sincera.intern.dto.*;
 import com.sincera.intern.model.Site;
 import com.sincera.intern.model.Slot;
+import com.sincera.intern.model.User;
 import com.sincera.intern.repository.SiteRepository;
 import com.sincera.intern.service.*;
 import org.slf4j.Logger;
@@ -433,7 +434,8 @@ public class TNIController {
 
     @RequestMapping(value = "/allUsers",method = RequestMethod.GET)
     public  String viewUsers(@ModelAttribute("userDto") UserDto userDto, Model model){
-        List<UserDto> users = userService.getUser(userDto);
+//        List<UserDto> users = userService.getUser(userDto);
+        Iterable<User> users = userService.users(userDto);
         model.addAttribute("users",users);
 //    model.addAttribute("")
         return "all_users";

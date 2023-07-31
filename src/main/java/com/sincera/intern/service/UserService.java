@@ -1,8 +1,6 @@
 package com.sincera.intern.service;
 
-import com.sincera.intern.dto.SiteDto;
 import com.sincera.intern.dto.UserDto;
-import com.sincera.intern.model.Site;
 import com.sincera.intern.model.User;
 import com.sincera.intern.repository.UserRepository;
 import org.slf4j.Logger;
@@ -42,5 +40,9 @@ public class UserService {
         }
         log.info("a "+userDtoList.toString());
         return userDtoList;
+    }
+
+    public Iterable<User> users(UserDto userDto){
+        return userRepository.findAll();
     }
 }
