@@ -20,12 +20,18 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" object-ref="schemas/tni/tables/site" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.site" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.users_roles" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.users" active-filter-id="EMPTY_FILTER" />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
+  <component name="DBNavigator.Project.FileConnectionMappingManager">
+    <mapping file-url="file://$PROJECT_DIR$/src/main/resources/static/insert.sql" connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" session-id="MAIN" current-schema="tni" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
@@ -517,5 +523,8 @@
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
   </component>
 </project>

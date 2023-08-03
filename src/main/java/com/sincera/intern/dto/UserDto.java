@@ -17,7 +17,7 @@ public class UserDto {
                 ", role='" + role + '\'' +
                 ", createdDate=" + createdDate +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+//                ", password='" + password + '\'' +
                 ", enabled=" + enabled +
                 '}';
     }
