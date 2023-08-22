@@ -1,10 +1,14 @@
 package com.sincera.intern.dto;
 
+import com.sincera.intern.model.Role;
+
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserDto {
     private Long id;
-    private  String role;
+    private Set<Role> roles;
     private Date createdDate;
     private String username;
     private String password;
@@ -14,7 +18,7 @@ public class UserDto {
     public String toString() {
         return "UserDto{" +
                 "id=" + id +
-                ", role='" + role + '\'' +
+//                ", role='" + role + '\'' +
                 ", createdDate=" + createdDate +
                 ", username='" + username + '\'' +
 //                ", password='" + password + '\'' +
@@ -30,12 +34,14 @@ public class UserDto {
         this.createdDate = createdDate;
     }
 
-    public String getRole() {
-        return role;
+
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {

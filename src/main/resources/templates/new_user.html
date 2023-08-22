@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head">
+</head>
+<body>
+<div th:replace="fragments :: tni_menu"/>
+<div class="container" style="display: flex; height: 100px;">
+    <div class="container">
+        <h4>New User</h4>
+        <br />
+        <form action="#" th:action="@{/newUser}" th:object="${userDto}" method="post">
+
+            <table border="0" cellpadding="10" class="table table-bordered">
+                <tr>
+                    <td>Username:</td>
+                    <td><input id="username" name="username" type="text" /></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input id="password" name="password" type="password" /></td>
+                </tr>
+                <tr>
+                    <td>Role:</td>
+                    <td>
+                        <select class="form-control" id="dropDownList" name="roles">
+                            <option value="0">select option</option>
+                            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+                        </select>
+                </tr>
+            </table>
+            <br/>
+            <div class="btn-group"><button type="submit" name="action" value="create-user" class="btn btn-primary">Create</button></div>
+            <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
+            <div class="btn-group"><button type="submit" name="action" value="cancel" class="btn btn-primary">Cancel</button></div>
+        </form>
+    </div>
+</div>
+<div th:replace="fragments :: tni_footer"/>
+</body>
+</html>

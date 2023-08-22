@@ -20,11 +20,20 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" object-ref="schemas/tni/tables/users_roles" />
+      <object connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" object-ref="schemas/tni/tables/roles" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.roles" active-filter-id="EMPTY_FILTER">
+      <filter id="8452e570-5f67-46d7-b282-bde57c89bf0e" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="role_id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
     <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.site" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.users_roles" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.slot" active-filter-id="" />
     <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.users" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">

@@ -2,9 +2,11 @@ package com.sincera.intern.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sincera.intern.dto.*;
+import com.sincera.intern.model.Role;
 import com.sincera.intern.model.Site;
 import com.sincera.intern.model.Slot;
 import com.sincera.intern.model.User;
+import com.sincera.intern.repository.RoleRepository;
 import com.sincera.intern.repository.SiteRepository;
 import com.sincera.intern.service.*;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +28,9 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class TNIController {
@@ -52,6 +57,8 @@ public class TNIController {
 
     @Autowired
     Environment env;
+    @Autowired
+    RoleRepository roleRepository;
 
     @Value("#{'${inventory.status.list}'.split(',')}")
     private List<String> statusList;
@@ -440,6 +447,62 @@ public class TNIController {
 //    model.addAttribute("")
         return "all_users";
     }
+    @RequestMapping(value = "/newUser",method = RequestMethod.POST,params = "action=create-user")
+    public  String addUser(@ModelAttribute("userDto") UserDto userDto, Model model){
+        userDto.setCreatedDate(new Date());
+        userDto.setPassword(generateEncodedPassword(userDto.getPassword()));
+        userService.addUser(userDto);
+        return "redirect:/allUsers";
+    }
+    private String generateEncodedPassword(String pwd){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(pwd);
+    }
+
+    @RequestMapping(value = "/newUser")
+    public  String loadUser( Model model){
+//        List<UserDto> users = userService.getUser(userDto);
+        UserDto userDto =  new UserDto();
+        List<Role> roles = (List<Role>) roleRepository.findAll();
+
+        model.addAttribute("roles",roles);
+        model.addAttribute("userDto",userDto);
+////    model.addAttribute("")
+//        return "all_users";
+        return  "new_user";
+    }
+
+    @RequestMapping(value = "/processUser/{id}", method =RequestMethod.POST, params="action=enable")
+    public ModelAndView processUserEnable(@PathVariable (name="id") Long id) {
+        User user = userService.get(id);
+        user.setEnabled(true);
+        userService.save(user);
+        ModelAndView mav = new ModelAndView("all_users");
+        List<User> users = userService.listAll();
+        mav.addObject("users",users);
+        return mav;
+    }
+
+    @RequestMapping(value = "/processUser/{id}", method =RequestMethod.POST, params="action=disable")
+    public ModelAndView processUserDisable(@PathVariable (name="id") Long id) {
+        User user = userService.get(id);
+        user.setEnabled(false);
+        userService.save(user);
+        ModelAndView mav = new ModelAndView("all_users");
+        List<User> users = userService.listAll();
+        mav.addObject("users",users);
+        return mav;
+    }
+
+    @RequestMapping(value = "/processUser/{id}", method =RequestMethod.POST, params="action=delete")
+    public ModelAndView processUserDelete(@PathVariable (name="id") Long id) {
+        userService.delete(id);
+        ModelAndView mav = new ModelAndView("all_users");
+        List<User> users = userService.listAll();
+        mav.addObject("users",users);
+        return mav;
+    }
+
     @RequestMapping("/tni")
     public String viewHomePage(Model model) throws JsonProcessingException {
         log.info("Index");

@@ -6,18 +6,11 @@
 <div th:replace="fragments :: tni_menu" />
 <div class="container tbl-container" >
 	<br>
-	<h3>Dashboard</h3>
-	<br/>
-	<!--<span th:if="${msg != null}" th:text="${msg}"></span>-->
-	<div class="row tbl-fixed">
-		<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-			Launch demo modal
-		</button>-->
-		<a href="#" data-toggle="modal" data-target="#exampleModal">Try Me</a>
-
-		<!-- Modal -->
-		<div th:replace="fragments :: tni_modal" />
-
+	<div class="container tbl-container">
+		<br>
+		<h3>Welcome to the Telecom Inventory System</h3>
+		<p>This is the homepage of the Telecom Inventory System. You can use the navigation menu above to access different sections of the application.</p>
+		<p>Feel free to explore and manage your telecom equipment and resources!</p>
 	</div>
 </div>
 <div th:replace="fragments :: tni_footer" />
