@@ -230,9 +230,9 @@ public class TNIController {
     }
 
     @RequestMapping(value = "/tni/slots/{selectedSlotIds}", method =RequestMethod.POST, params="action=DeleteRecords")
-//    public ModelAndView DeleteSlots(@PathVariable (name="slotDto") SlotDto slotDto) {
-//        slotService.delete(slotDto);
-    public ModelAndView DeleteSlots(@PathVariable (name="selectedSlotIds") List<Slot> selectedSlotIds) {
+    public ModelAndView DeleteSlots(@PathVariable (name="slotDto") SlotDto slotDto) {
+        slotService.delete(slotDto);
+//    public ModelAndView DeleteSlots(@PathVariable (name="selectedSlotIds") List<Slot> selectedSlotIds) {
         slotService.delete(selectedSlotIds);
         ModelAndView mav = new ModelAndView("Search_slot");
         List<Slot> slots = slotService.listAll();
