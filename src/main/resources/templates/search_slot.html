@@ -38,9 +38,12 @@
         </form>
     </div>
     <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%" >
+<!--        <form action="#" th:action="@{'/tni/slots/' + ${slot.slotId}}" th:object="${slotDto}" method="post">-->
+        <form action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post" id="post">
         <table th:if="${not #lists.isEmpty(slots)}" border="1" cellpadding="10" class="table table-striped">
             <thead>
             <tr>
+                <th>Select</th>
                 <th>Slot Name</th>
                 <th>Parent Shelf Id</th>
                 <th>Parent Shelf Name</th>
@@ -50,6 +53,11 @@
             </thead>
             <tbody>
             <tr th:each="slot : ${slots}">
+
+                <td>
+<!--                    <div class="btn-group"></div>-->
+                    <input type="checkbox" name="selectedSlotIds" th:value="${slot.slotId}" />
+                </td>
                 <td>
                     <div class="modal fade" th:id="${'slotModal-' + slot.slotId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -107,8 +115,12 @@
                 <!-- Add other table data for Slot attributes -->
             </tr>
             </tbody>
-
         </table>
+            <div class="btn-group"><button type="submit" name="action" value="DeleteRecords" class="btn btn-primary">Delete</button></div>
+            <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
+
+
+        </form>
         <div th:if="${#lists.isEmpty(slots)}" style="color: red">
             <p th:text="${error}"></p>
         </div>

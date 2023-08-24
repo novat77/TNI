@@ -2,6 +2,7 @@ package com.sincera.intern.service;
 
 import com.sincera.intern.dto.SlotDto;
 import com.sincera.intern.model.Slot;
+import com.sincera.intern.model.User;
 import com.sincera.intern.repository.ShelfRepository;
 import com.sincera.intern.repository.SiteRepository;
 import com.sincera.intern.repository.SlotRepository;
@@ -149,5 +150,15 @@ public class SlotService {
         }
         return null;
     }
+//    public void delete(SlotDto slotDto) {
+//        Integer id = slotDto.getSlotId();
+//        slotRepository.deleteAll(id);
+//    }
+    public void delete(List<Slot> id) {
+        slotRepository.deleteAll(id);
+    }
 
+    public List<Slot> listAll() {
+        return (List<Slot>) slotRepository.findAll();
+    }
 }

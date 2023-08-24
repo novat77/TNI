@@ -53,6 +53,7 @@
     <table border="1" cellpadding="10" class="table table-striped" th:unless="${error}">
       <thead>
       <tr>
+        <th>Select</th>
         <th>Slot Name</th>
         <th>Parent Shelf Id</th>
         <th>Parent Shelf Name</th>
@@ -62,6 +63,9 @@
       </thead>
       <tbody>
       <tr th:each="slot : ${slots}">
+        <td>
+          <input type="checkbox" name="selectedSlotIds" th:value="${slot.slotId}" />
+        </td>
         <td>
           <div th:replace="search_slot :: tni_modal"/>
           <a href="#" th:text="${slot.slotName}" data-toggle="modal" data-target="#slotModal">Slot Name</a>
