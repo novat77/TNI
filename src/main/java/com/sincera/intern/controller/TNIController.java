@@ -229,17 +229,6 @@ public class TNIController {
         return "new_shelf";
     }
 
-    @RequestMapping(value = "/tni/slots/{selectedSlotIds}", method =RequestMethod.POST, params="action=DeleteRecords")
-    public ModelAndView DeleteSlots(@PathVariable (name="slotDto") SlotDto slotDto) {
-        slotService.delete(slotDto);
-//    public ModelAndView DeleteSlots(@PathVariable (name="selectedSlotIds") List<Slot> selectedSlotIds) {
-        slotService.delete(selectedSlotIds);
-        ModelAndView mav = new ModelAndView("Search_slot");
-        List<Slot> slots = slotService.listAll();
-        mav.addObject("slots",slots);
-        return mav;
-
-    }
     @RequestMapping(value = "/tni/slots", method = RequestMethod.POST, params = "action=update-slot")
     public String updateSlot(@ModelAttribute("slotDto") SlotDto slotDto, Model model) {
         log.info("Updating slot: " + slotDto.toString());
@@ -514,7 +503,23 @@ public class TNIController {
         return mav;
     }
 
+    @RequestMapping(value = "/tni/slots/{slotId}", method =RequestMethod.POST, params="action=deleteRecords")
+//    public ModelAndView DeleteSlots(@ModelAttribute (name="slot") SlotDto slot) {
+//        log.info("=================== "+slot);
+//        Integer id = slot.getSlotId();
+//        slotService.delete(id);
+    public ModelAndView DeleteSlots(@PathVariable (name="slotId") String slotId) {
+        log.info("=================== "+slotId);
 
+        slotService.delete(Integer.valueOf(slotId));
+
+
+        ModelAndView mav = new ModelAndView("Search_slot");
+        List<Slot> slots = slotService.listAll();
+        mav.addObject("slots",slots);
+        return mav;
+
+    }
 
     @RequestMapping("/tni")
     public String viewHomePage(Model model) throws JsonProcessingException {

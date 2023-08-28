@@ -154,8 +154,8 @@ public class SlotService {
 //        Integer id = slotDto.getSlotId();
 //        slotRepository.deleteAll(id);
 //    }
-    public void delete(List<Slot> id) {
-        slotRepository.deleteAll(id);
+    public void delete(Integer id) {
+        slotRepository.deleteById(id);
     }
 
     public List<Slot> listAll() {
