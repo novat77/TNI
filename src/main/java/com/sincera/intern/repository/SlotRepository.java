@@ -1,23 +1,30 @@
 package com.sincera.intern.repository;
 
 import com.sincera.intern.model.Slot;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface SlotRepository extends CrudRepository<Slot, Integer> {
-
+    @Modifying
+    @Transactional
+    @Query(value = "TRUNCATE TABLE Slot",nativeQuery = true)
+    void truncateSlot();
     @Query("SELECT a from Slot a Where a.slotName = :slotName")
     Slot getSlotBySlotName(@Param("slotName") String slotName);
     @Query("SELECT s FROM Slot s WHERE " +
-            "(:slotName is null or :slotName = '' or s.slotName like %:slotName%) " +
+            "(:slotId is null or s.slotId = :slotId) " +
+            "AND (:slotName is null or :slotName = '' or s.slotName like %:slotName%) " +
             "AND (:parentShelfId is null or s.parentShelfId = :parentShelfId) " +
             "AND (:parentShelfName is null or :parentShelfName = '' or s.parentShelfName = :parentShelfName) " +
             "AND (:parentSiteId is null or s.parentSiteId = :parentSiteId) " +
-            "AND (:parentSiteName is null or :parentSiteName = '' or s.parentSiteName = :parentSiteName) " )
+            "AND (:parentSiteName is null or :parentSiteName = '' or s.parentSiteName = :parentSiteName) ")
     List<Slot> getSlotsBy(
+            @Param("slotId") Integer slotId,
             @Param("slotName") String slotName,
             @Param("parentShelfId") Integer parentShelfId,
             @Param("parentShelfName") String parentShelfName,
@@ -43,6 +50,4 @@ public interface SlotRepository extends CrudRepository<Slot, Integer> {
 
     @Query("SELECT s FROM Slot s WHERE s.parentShelfId = :parentShelfId AND s.parentShelfName LIKE %:parentShelfName%")
     List<Slot> getSlotsByParentShelfIdParentShelfName(@Param("parentShelfId") Integer parentShelfId, @Param("parentShelfName") String parentShelfName);
-
-
 }

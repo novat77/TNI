@@ -2,18 +2,20 @@ package com.sincera.intern.service;
 
 import com.sincera.intern.dto.SlotDto;
 import com.sincera.intern.model.Slot;
-import com.sincera.intern.model.User;
 import com.sincera.intern.repository.ShelfRepository;
 import com.sincera.intern.repository.SiteRepository;
 import com.sincera.intern.repository.SlotRepository;
 import com.sincera.intern.util.SlotValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SlotService {
@@ -90,6 +92,7 @@ public class SlotService {
         return null;
     }
     public List<SlotDto> getSlots(SlotDto slotDto) {
+        Integer slotId = slotDto.getSlotId();
         String slotName = slotDto.getSlotName();
         Integer parentShelfId = slotDto.getParentShelfId();
         String parentShelfName = slotDto.getParentShelfName();
@@ -97,7 +100,7 @@ public class SlotService {
         String parentSiteName = slotDto.getParentSiteName();
 //        log.info(slotRepository.getSlotsFromSlotName(slotName));
         return convertToSlotDtoList(slotRepository.getSlotsBy(
-                slotName, parentShelfId, parentShelfName, parentSiteId, parentSiteName));
+                slotId,slotName, parentShelfId, parentShelfName, parentSiteId, parentSiteName));
     }
 
     private List<SlotDto> convertToSlotDtoList(List<Slot> slots) {
@@ -105,6 +108,7 @@ public class SlotService {
         if (slots != null && !slots.isEmpty()) {
             for (Slot slot : slots) {
                 SlotDto dto = new SlotDto();
+                dto.setSlotId(slot.getSlotId());
                 dto.setSlotName(slot.getSlotName());
                 dto.setParentShelfId(slot.getParentShelfId());
                 dto.setParentShelfName(slot.getParentShelfName());
@@ -150,15 +154,39 @@ public class SlotService {
         }
         return null;
     }
-//    public void delete(SlotDto slotDto) {
-//        Integer id = slotDto.getSlotId();
-//        slotRepository.deleteAll(id);
-//    }
-    public void delete(Integer id) {
-        slotRepository.deleteById(id);
+
+    public void delete(List<Integer> ids) {
+        List<Slot> slotsToDelete = new ArrayList<>();
+        for (Integer id : ids) {
+            Optional<Slot> slotOptional = slotRepository.findById(id);
+            slotOptional.ifPresent(slotsToDelete::add);
+        }
+        log.info("SLOTS TO BE DELETED=============================="+slotsToDelete);
+        slotRepository.deleteAll(slotsToDelete);
     }
 
-    public List<Slot> listAll() {
-        return (List<Slot>) slotRepository.findAll();
+
+    public List<SlotDto> listAll() {
+        List<Slot>  slots = (List<Slot>)slotRepository.findAll();
+        List<SlotDto> slotDtolist = new ArrayList<>();
+        if(!slots.isEmpty()) {
+            //we use the iterator because of the beanutils.copyproperties which is a bit wise operation
+            Iterator<Slot> slotItr = slots.iterator();
+            while(slotItr.hasNext()) {
+                SlotDto sd = new SlotDto();
+                BeanUtils.copyProperties(slotItr.next(), sd);
+                slotDtolist.add(sd);
+            }
+            return slotDtolist;
+        }
+        else {
+            SlotDto slotDto = new SlotDto();
+            return slotDtolist;
+        }
+
+    }
+
+    public void truncateSlot() {
+        slotRepository.truncateSlot();
     }
 }

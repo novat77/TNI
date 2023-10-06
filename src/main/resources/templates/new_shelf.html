@@ -5,11 +5,11 @@
 </head>
 <body>
 <div th:replace="fragments :: tni_menu" />
-<div class="container" style="display: flex; height: 100px;">
-  <div class="tbl-container" style="margin-left: 50px; margin-right: 15px width: 30%" >
-    <h4>Shelf</h4>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+  <div class="tbl-container" style="margin-left: 0px; margin-right: 15px width: 30%" >
+    <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Shelf</h4>
     <br />
-    <form action="#" th:action="@{/tni/shelfs}" th:object="${shelfDto}" method="post">
+    <form action="#" th:action="@{/tni/shelves}" th:object="${shelfDto}" method="post">
 
       <table border="0" cellpadding="10" class="table table-striped">
         <tr>
@@ -59,7 +59,7 @@
     </form>
   </div>
 
-  <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%">
+  <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
     <table border="1" cellpadding="10" class="table table-striped"th:unless="${error}" >
       <thead>
       <tr>
@@ -74,7 +74,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="shelf : ${shelfs}">
+      <tr th:each="shelf : ${shelves}">
         <td>
           <div th:replace="Search_shelf :: tni_modal" />
           <a href="#" th:text="${shelf.name}" data-toggle="modal" data-target="#shelfModal">Name</a>

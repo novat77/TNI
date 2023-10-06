@@ -193,6 +193,9 @@ public class SiteService {
         }
         return null;
     }
+    public void truncateSite() {
+        siteRepository.truncateSite();
+    }
 }
 //        String name = siteDto.getSiteName();
 //        String status = siteDto.getStatus();

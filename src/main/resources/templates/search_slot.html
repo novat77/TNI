@@ -4,11 +4,11 @@
 <head th:replace="fragments :: tni_head" />
 <body>
 <div th:replace="fragments :: tni_menu" />
-<div class="container" style="display: flex; height: 100px;">
-    <div class="tbl-container" style="margin-left: 50px; margin-right: 15px width: 30%" >
-        <h4>Slot</h4>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+    <div class="tbl-container" style="margin-left: 0px; margin-right: 15px width: 30%" >
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Slot</h4>
         <br />
-        <form action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post">
+        <form  action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post">
 
             <table border="0" cellpadding="10" class="table table-striped">
                 <tr>
@@ -37,9 +37,9 @@
             <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="search-slot" class="btn btn-primary">Search</button></div>
         </form>
     </div>
-    <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%" >
-
-<!--        <form action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post" id="post">-->
+    <br>
+    <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
+        <form th:if="${not #lists.isEmpty(slots)}" action="#"th:action="@{/tni/slots/delete}" method="post">
         <table th:if="${not #lists.isEmpty(slots)}" border="1" cellpadding="10" class="table table-striped">
             <thead>
             <tr>
@@ -54,15 +54,9 @@
             <tbody>
 
             <tr th:each="slot : ${slots}">
-
                 <td>
-                    <div class="btn-group">
-                    <form action="#" th:action="@{'/tni/slots/'+ ${slot.slotId}}" th:object="${slot}" method="post">
-                        <input type="hidden" class="form-control"  name="slotId" th:value="${slot.slotId}" />
-<!--                    <input type="checkbox" name="selectedSlotIds" th:value="${slot.slotId}" />/' -->
-                        <div class="btn-group"><button type="submit" name="action" value="deleteRecords" class="btn btn-primary">Delete</button></div>
-<!--                        <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>-->
-                    </form>
+                    <div>
+                        <input type="checkbox" th:name="selectedRecordsIds" th:value="${slot.slotId}" />
                     </div>
                 </td>
                 <td>
@@ -119,11 +113,13 @@
                 <td th:text="${slot.parentShelfName}"></td>
                 <td th:text="${slot.parentSiteId}"></td>
                 <td th:text="${slot.parentSiteName}"></td>
-                <!-- Add other table data for Slot attributes -->
             </tr>
 
             </tbody>
         </table>
+            <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
+            <div class="btn-group"><button type="submit" name="action" value="DeleteRecords" class="btn btn-primary" >Delete</button></div>
+        </form>
         <div th:if="${#lists.isEmpty(slots)}" style="color: red">
             <p th:text="${error}"></p>
         </div>

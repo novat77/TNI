@@ -28,10 +28,13 @@
         <condition column="role_id" operator="=" value="" active="true" />
       </filter>
     </filter-actions>
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.card" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.site" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.users_roles" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.slot" active-filter-id="" />
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.shelf" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.slot" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.users" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="8042f76e-706e-4c1f-a9bb-f29371786dfa" dataset="tni.port" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
@@ -100,6 +103,13 @@
           <max-connection-pool-size value="7" />
           <alternative-statement-delimiter value="" />
         </details>
+        <debugger>
+          <compile-dependencies value="true" />
+          <tcp-driver-tunneling value="false" />
+          <tcp-host-address value="" />
+          <tcp-port-from value="4000" />
+          <tcp-port-to value="4999" />
+        </debugger>
         <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
           <object-type-filter>
             <object-type name="SCHEMA" enabled="true" />
@@ -482,7 +492,6 @@
       </compiler>
       <debugger>
         <debugger-type value="ASK" />
-        <use-generic-runners value="true" />
       </debugger>
     </operation-settings>
     <ddl-file-settings>

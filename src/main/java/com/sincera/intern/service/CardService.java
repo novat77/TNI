@@ -2,18 +2,19 @@ package com.sincera.intern.service;
 
 import com.sincera.intern.dto.CardDto;
 import com.sincera.intern.model.Card;
-import com.sincera.intern.repository.CardRepository;
-import com.sincera.intern.repository.ShelfRepository;
-import com.sincera.intern.repository.SiteRepository;
-import com.sincera.intern.repository.SlotRepository;
+import com.sincera.intern.model.Port;
+import com.sincera.intern.repository.*;
 import com.sincera.intern.util.CardValidation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -28,6 +29,8 @@ public class CardService {
     ShelfRepository shelfRepository;
     @Autowired
     SiteRepository siteRepository;
+    @Autowired
+    PortRepository portRepository;
 
     public CardDto createSingleCard(CardDto cardDto) {
         String response = "";
@@ -166,4 +169,38 @@ public class CardService {
         return null;
     }
 
+    public void delete(List<Integer> selectedRecords) {
+        List<Card> cardsToDelete = new ArrayList<>();
+        List<Port> portsToDelete = new ArrayList<>();
+
+        for (Integer id : selectedRecords) {
+            Optional<Card> cards = cardRepository.findById(id);
+            log.info("cards========================="+cards);
+//            Optional<Port> ports = portRepository.getportbycardSN(id);
+//            ports.ifPresent(portsToDelete::add);
+            cards.ifPresent(cardsToDelete::add);
+        }
+        log.info("port to be deleted = " + portsToDelete.toString());
+//        portRepository.deleteAll(portsToDelete);
+        log.info("Cards to be deleted = " + cardsToDelete.toString());
+//        cardRepository.deleteAll(cardsToDelete);
+    }
+
+    public List<CardDto> listAll() {
+        List<Card> cardsToDelete =  (List<Card>) cardRepository.findAll();
+        List<CardDto> cardDtoList = new ArrayList<>();
+        if(!cardsToDelete.isEmpty()){
+            Iterator<Card> cardIterator = cardsToDelete.iterator();
+            while (cardIterator.hasNext()){
+                CardDto cadd = new CardDto();
+                BeanUtils.copyProperties(cardIterator.next(),cadd);
+                cardDtoList.add(cadd);
+            }
+        }
+        return cardDtoList;
+    }
+
+    public void truncateCard() {
+        cardRepository.truncateCard();
+    }
 }

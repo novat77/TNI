@@ -4,9 +4,9 @@
 <head th:replace="fragments :: tni_head" />
 <body>
 <div th:replace="fragments :: tni_menu" />
-<div class="container" style="display: flex; height: 100px;">
-    <div class="tbl-container" style="margin-left: 50px; margin-right: 15px width: 30%" >
-        <h4>Card</h4>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+    <div class="tbl-container" style="margin-left: 0px; margin-right: 15px width: 30%" >
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Card</h4>
         <br />
         <form action="#" th:action="@{/tni/cards}" th:object="${cardDto}" method="post">
             <table border="0" cellpadding="10" class="table table-striped">
@@ -52,10 +52,12 @@
             <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="search-card" class="btn btn-primary">Search</button></div>
         </form>
     </div>
-    <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%" >
+    <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
+        <form th:if="${not #lists.isEmpty(slots)}" action="#"th:action="@{/tni/cards/delete}" method="post">
         <table th:if="${not #lists.isEmpty(cards)}" border="1" cellpadding="10" class="table table-striped">
             <thead>
             <tr>
+                <th>Select</th>
                 <th>Card Name</th>
                 <th>Card Serial Number</th>
                 <th>Network ID</th>
@@ -70,9 +72,15 @@
             <tbody>
             <tr th:each="card : ${cards}">
                 <td>
+                    <div >
+                        <input type="checkbox" th:name="selectedRecordsIds" th:value="${card.cardId}" />
+                    </div>
+                </td>
+                <td>
+                    <!-- Modal -->
                     <div class="modal fade" th:id="${'cardModal-' + card.cardId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
-                            <div class="modal-content">
+                            <div class="modal-content modal-dialog-scrollable">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Card</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -146,8 +154,10 @@
                 <!-- Add other table data for Card attributes -->
             </tr>
             </tbody>
-
         </table>
+            <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
+            <div class="btn-group"><button type="submit" name="action" value="DeleteRecords" class="btn btn-primary" >Delete</button></div>
+        </form>
         <div th:if="${#lists.isEmpty(cards)}" style="color: red">
             <p th:text="${error}"></p>
         </div>

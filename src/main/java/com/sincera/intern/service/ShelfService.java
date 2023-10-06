@@ -1,17 +1,22 @@
 package com.sincera.intern.service;
 
 import com.sincera.intern.dto.ShelfDto;
+import com.sincera.intern.dto.SlotDto;
 import com.sincera.intern.model.Shelf;
+import com.sincera.intern.model.Slot;
 import com.sincera.intern.repository.ShelfRepository;
 import com.sincera.intern.repository.SiteRepository;
 import com.sincera.intern.util.ShelfValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShelfService {
@@ -175,5 +180,33 @@ public class ShelfService {
             }
         return null;
     }
+    public void truncateShelf() {
+        shelfRepository.truncateShelf();
+    }
 
+    public void delete(List<Integer> selectedRecordsIds) {
+        List<Shelf> shelvesToDel = new ArrayList<>();
+        for (Integer id : selectedRecordsIds) {
+            Optional<Shelf> shelfOptional = shelfRepository.findById(id);
+            shelfOptional.ifPresent(shelvesToDel::add);
+        }
+        log.info("SLOTS TO BE DELETED=============================="+shelvesToDel);
+        shelfRepository.deleteAll(shelvesToDel);
+    }
+
+    public List<ShelfDto> listAll() {
+        List<Shelf>  shelfList = (List<Shelf>)shelfRepository.findAll();
+        List<ShelfDto> shelfDtoList = new ArrayList<>();
+        if(!shelfList.isEmpty()) {
+            //we use the iterator because of the beanutils.copyproperties which is a bit wise operation
+            Iterator<Shelf> shelfIterator = shelfList.iterator();
+            while (shelfIterator.hasNext()) {
+                ShelfDto shelfDto = new ShelfDto();
+                BeanUtils.copyProperties(shelfIterator.next(), shelfDto);
+                shelfDtoList.add(shelfDto);
+            }
+
+        }
+        return shelfDtoList;
+    }
 }

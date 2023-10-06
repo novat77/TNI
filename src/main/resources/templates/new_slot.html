@@ -5,9 +5,9 @@
 </head>
 <body>
 <div th:replace="fragments :: tni_menu"/>
-<div class="container" style="display: flex; height: 100px;">
-  <div class="tbl-container" style="margin-left: 50px; margin-right: 15px; width: 30%">
-    <h4>Slot</h4>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+  <div class="tbl-container" style="margin-left: 0px; margin-right: 15px width: 30%" >
+    <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Slot</h4>
     <br/>
     <form action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post">
 
@@ -49,7 +49,7 @@
       <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="search-slot" class="btn btn-primary">Search</button></div>
     </form>
   </div>
-  <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%">
+  <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
     <table border="1" cellpadding="10" class="table table-striped" th:unless="${error}">
       <thead>
       <tr>

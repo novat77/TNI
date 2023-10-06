@@ -3,9 +3,11 @@ package com.sincera.intern.repository;
 import com.sincera.intern.model.Card;
 import com.sincera.intern.model.Shelf;
 import com.sincera.intern.model.Slot;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,5 +40,8 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
             @Param("parentSiteName") String parentSiteName);
     @Query("SELECT a.cardId from Card a Where a.cardName = :cardName")
     int getCardIdFromCardName(@Param("cardName") String cardName);
-
+    @Modifying
+    @Transactional
+    @Query(value = "TRUNCATE TABLE Card",nativeQuery = true)
+    void truncateCard();
 }

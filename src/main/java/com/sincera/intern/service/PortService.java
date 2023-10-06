@@ -143,5 +143,7 @@ public class PortService {
         }
         return null;
     }
-
+    public void truncatePort() {
+        portRepository.truncatePort();
+    }
 }

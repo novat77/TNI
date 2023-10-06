@@ -2,10 +2,7 @@ package com.sincera.intern.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sincera.intern.dto.*;
-import com.sincera.intern.model.Role;
-import com.sincera.intern.model.Site;
-import com.sincera.intern.model.Slot;
-import com.sincera.intern.model.User;
+import com.sincera.intern.model.*;
 import com.sincera.intern.repository.RoleRepository;
 import com.sincera.intern.repository.SiteRepository;
 import com.sincera.intern.service.*;
@@ -77,6 +74,9 @@ public class TNIController {
     @Value("#{'${inventory.port.bw.list}'.split(',')}")
     private List<String> portBandwidthList;
 
+    @Value("#{'${inventory.truncate.list}'.split(',')}")
+    private List<String> truncateList;
+
 //    @PostMapping(path = "/site/create")
 //    public ResponseEntity<SiteDto> createSite(@RequestBody SiteDto siteDto) throws JsonProcessingException {
 //        ResponseEntity<SiteDto> response = null;
@@ -117,6 +117,39 @@ public class TNIController {
 //        model.addAttribute("siteTypeList", siteTypeList);
 //        return "new_site";
 //    }
+
+    @RequestMapping(value = "/tni/truncate", method = RequestMethod.POST, params = "action=truncate")
+    public String truncateTable(@ModelAttribute("truncateDto") TruncateDto truncateDto, Model model) {
+        log.info("Truncate DTO from Controller = " + truncateDto.toString());
+        String truncateTable = truncateDto.getTruncateTable();
+        if (truncateTable.equals("site")) {
+            siteService.truncateSite();
+            shelfService.truncateShelf();
+            slotService.truncateSlot();
+            cardService.truncateCard();
+            portService.truncatePort();
+        } else if (truncateTable.equals("shelf")) {
+            shelfService.truncateShelf();
+            slotService.truncateSlot();
+            cardService.truncateCard();
+            portService.truncatePort();
+        } else if (truncateTable.equals("slot")) {
+            slotService.truncateSlot();
+            cardService.truncateCard();
+            portService.truncatePort();
+        } else if (truncateTable.equals("card")) {
+            cardService.truncateCard();
+            portService.truncatePort();
+        } else if (truncateTable.equals("port")) {
+            portService.truncatePort();
+        } else {
+            log.error("Invalid table name: " + truncateTable);
+        }
+        TruncateDto dto = new TruncateDto();
+        model.addAttribute("truncateDto", dto);
+        model.addAttribute("truncateList", truncateList);
+        return "truncate_table";
+    }
 
     @RequestMapping(value = "/tni/sites", method = RequestMethod.POST, params = "action=update-site")
     public String updateSite(@ModelAttribute("siteDto") SiteDto siteDto, Model model) {
@@ -174,19 +207,34 @@ public class TNIController {
         return "new_site";
     }
 
-    @RequestMapping(value = "/tni/shelfs", method = RequestMethod.POST, params = "action=update-shelf")
+    @RequestMapping(value = "/tni/shelves",method = RequestMethod.POST, params = "action=DeleteRecords")
+    public String deleteSelectedShelves(@RequestParam(name = "selectedRecordsIds", required = false) List<Integer> selectedRecordsIds,Model model) {
+        log.info("SELECTED SHELVES FOR DEL=============================="+selectedRecordsIds);
+        try{
+            shelfService.delete(selectedRecordsIds);
+        }catch (NullPointerException e){
+            log.info("NULL");
+        }
+        ShelfDto shelfDto = new ShelfDto();
+        List<ShelfDto> shelfDtoList = shelfService.listAll();
+        log.info("size of return================="+shelfDtoList.size());
+        model.addAttribute("shelfDto", shelfDto);
+        model.addAttribute("shelves",shelfDtoList);
+        return "search_shelf";
+    }
+    @RequestMapping(value = "/tni/shelves", method = RequestMethod.POST, params = "action=update-shelf")
     public String updateShelf(@ModelAttribute("shelfDto") ShelfDto shelfDto, Model model) {
         log.info("Updating shelf: " + shelfDto.toString());
         ShelfDto updatedShelfDto = shelfService.updateAndGetShelf(shelfDto);
-        List<ShelfDto> shelfs = new ArrayList<>();
-        shelfs.add(updatedShelfDto);
-        model.addAttribute("shelfs", shelfs);
+        List<ShelfDto> shelves = new ArrayList<>();
+        shelves.add(updatedShelfDto);
+        model.addAttribute("shelves", shelves);
         model.addAttribute("statusList", statusList);
         model.addAttribute("shelfTypeList", shelfTypeList);
         return "search_shelf";
     }
 
-    @RequestMapping(value = "/tni/shelfs", method = RequestMethod.POST, params = "action=create-shelf")
+    @RequestMapping(value = "/tni/shelves", method = RequestMethod.POST, params = "action=create-shelf")
     public String saveSingleShelf(@Valid @ModelAttribute("shelfDto") ShelfDto shelfDto,BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "new_shelf";
@@ -198,21 +246,22 @@ public class TNIController {
             model.addAttribute("error", errorMessage);
             return "new_shelf";
         }
-        List<ShelfDto> shelfs = new ArrayList<>();
-        shelfs.add(dto);
-        model.addAttribute("shelfs", shelfs);
+        List<ShelfDto> shelves = new ArrayList<>();
+        shelves.add(dto);
+        model.addAttribute("shelves", shelves);
         model.addAttribute("statusList", statusList);
         model.addAttribute("shelfTypeList", shelfTypeList);
         return "search_shelf";
     }
-    @RequestMapping(value = "/tni/shelfs", method = RequestMethod.POST, params = "action=search-shelf")
+    @RequestMapping(value = "/tni/shelves", method = RequestMethod.POST, params = "action=search-shelf")
     public String searchShelf(@ModelAttribute("shelfDto") ShelfDto shelfDto, Model model) {
         log.info("Shelf DTO from Controller = " + shelfDto.toString());
-        List<ShelfDto> shelfs = shelfService.getShelfs(shelfDto);
-        if (shelfs.isEmpty()) {
+        List<ShelfDto> shelves = shelfService.getShelfs(shelfDto);
+        log.info("========================"+shelves.size());
+        if (shelves.isEmpty()) {
             model.addAttribute("error", "No shelfs found.");
         } else {
-            model.addAttribute("shelfs", shelfs);
+            model.addAttribute("shelves", shelves);
         }
         log.info("Shelf search completed successfully!");
         model.addAttribute("statusList", statusList);
@@ -229,17 +278,32 @@ public class TNIController {
         return "new_shelf";
     }
 
+    @RequestMapping(value = "/tni/slots/delete", method = RequestMethod.POST, params = "action=DeleteRecords")
+    //we need the required attribute to be false, for the deleteSelectedSlots method to execute even when there is no records selected
+    public String deleteSelectedSlots(@RequestParam(name = "selectedRecordsIds", required = false) List<Integer> selectedRecordsIds,Model model) {
+        log.info("SLOTS SELECTED=============================="+selectedRecordsIds);
+        //this try catch is meant to handel the null pointer exception that is when we receive a empty or a null in place of selected slots
+        try{
+            slotService.delete(selectedRecordsIds);
+        }catch (NullPointerException e){//lets try to give a interface where we provide them a message to select a record to delete
+            log.info("NULL");
+        }
+        List<SlotDto> slots = slotService.listAll();
+        SlotDto slotDto = new SlotDto();
+        //so we are sending two attributes here, one is the slotDto object for the form, and the other is
+        // the slots object for the table to generate val
+        model.addAttribute("slots", slots);
+        model.addAttribute("slotDto", slotDto);
+        return "search_slot";
+    }
     @RequestMapping(value = "/tni/slots", method = RequestMethod.POST, params = "action=update-slot")
     public String updateSlot(@ModelAttribute("slotDto") SlotDto slotDto, Model model) {
         log.info("Updating slot: " + slotDto.toString());
 
-        // Call the update method in the service class to update the slot
         SlotDto updatedSlotDto = slotService.updateAndGetSlot(slotDto);
         List<SlotDto> slots = new ArrayList<>();
         slots.add(updatedSlotDto);
         model.addAttribute("slots", slots);
-        model.addAttribute("statusList", statusList);
-        model.addAttribute("shelfTypeList", shelfTypeList);
         return "search_slot";
     }
 
@@ -258,8 +322,6 @@ public class TNIController {
         List<SlotDto> slots = new ArrayList<>();
         slots.add(dto);
         model.addAttribute("slots", slots);
-        model.addAttribute("statusList", statusList);
-        model.addAttribute("shelfTypeList", shelfTypeList);
         return "search_slot";
     }
     @RequestMapping(value = "/tni/slots", method = RequestMethod.POST, params = "action=search-slot")
@@ -272,19 +334,30 @@ public class TNIController {
             model.addAttribute("slots", slots);
         }
         log.info("Slot search completed successfully!");
-        model.addAttribute("statusList", statusList);
-        model.addAttribute("shelfTypeList", shelfTypeList);
         return "search_slot";
     }
     @RequestMapping("/tni/slot")
     public String loadSlot (Model model) {
         SlotDto slotDto = new SlotDto();
         model.addAttribute("slotDto", slotDto);
-        model.addAttribute("statusList", statusList);
-        model.addAttribute("shelfTypeList", shelfTypeList);
         return "new_slot";
     }
-
+    @RequestMapping(value = "/tni/cards/delete", method = RequestMethod.POST, params = "action=DeleteRecords")
+    public String deleteSelectedCards(@RequestParam(name = "selectedRecordsIds", required = false) List<Integer> selectedRecordsIds,Model model) {
+        log.info("SELECTED CARDS FOR DEL=============================="+selectedRecordsIds);
+        try{
+            cardService.delete(selectedRecordsIds);
+        }catch (NullPointerException e){
+            log.info("NULL");
+        }
+        CardDto cardDto = new CardDto();
+        List<CardDto> cards = cardService.listAll();
+        //so we are sending two attributes here, one is the cardDto object for the form, and the other is
+        // the cards object for the table to generate val
+        model.addAttribute("cardDto", cardDto);
+        model.addAttribute("cards",cards);
+        return "search_card";
+    }
     @RequestMapping(value = "/tni/cards", method = RequestMethod.POST, params = "action=update-card")
     public String updateCard(@ModelAttribute("cardDto") CardDto cardDto, Model model) {
         log.info("Updating card: " + cardDto.toString());
@@ -501,24 +574,6 @@ public class TNIController {
         List<User> users = userService.listAll();
         mav.addObject("users",users);
         return mav;
-    }
-
-    @RequestMapping(value = "/tni/slots/{slotId}", method =RequestMethod.POST, params="action=deleteRecords")
-//    public ModelAndView DeleteSlots(@ModelAttribute (name="slot") SlotDto slot) {
-//        log.info("=================== "+slot);
-//        Integer id = slot.getSlotId();
-//        slotService.delete(id);
-    public ModelAndView DeleteSlots(@PathVariable (name="slotId") String slotId) {
-        log.info("=================== "+slotId);
-
-        slotService.delete(Integer.valueOf(slotId));
-
-
-        ModelAndView mav = new ModelAndView("Search_slot");
-        List<Slot> slots = slotService.listAll();
-        mav.addObject("slots",slots);
-        return mav;
-
     }
 
     @RequestMapping("/tni")

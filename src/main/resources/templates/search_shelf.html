@@ -4,11 +4,11 @@
 <head th:replace="fragments :: tni_head" />
 <body>
 <div th:replace="fragments :: tni_menu" />
-<div class="container" style="display: flex; height: 100px;">
-    <div class="tbl-container" style="margin-left: 50px; margin-right: 15px width: 30%">
-        <h4>Shelf</h4>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+    <div class="tbl-container" style="margin-left: 0px; margin-right: 15px width: 30%" >
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Shelf</h4>
         <br />
-        <form action="#" th:action="@{/tni/shelfs}" th:object="${shelfDto}" method="post">
+        <form action="#" th:action="@{/tni/shelves}" th:object="${shelfDto}" method="post">
 
             <table border="0" cellpadding="10" class="table table-striped">
                 <tr>
@@ -57,103 +57,112 @@
             <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="search-shelf" class="btn btn-primary">Search</button></div>
         </form>
     </div>
-    <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%" >
+    <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
         <!--        <table border="1" cellpadding="10" class="table table-striped">-->
-    </div>
-    <table th:if="${not #lists.isEmpty(shelfs)}" border="1" cellpadding="10" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Shelf Id</th>
-            <th>Type</th>
-            <th>Vendor</th>
-            <th>Model</th>
-<!--            <th>Status</th>-->
+        <form th:if="${not #lists.isEmpty(slots)}" action="#" th:action="@{/tni/shelves}" method="post">
+        <table th:if="${not #lists.isEmpty(shelves)}" border="1" cellpadding="10" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Selected</th>
+                <th>Name</th>
+                <th>Shelf Id</th>
+                <th>Type</th>
+                <th>Vendor</th>
+                <th>Model</th>
+    <!--            <th>Status</th>-->
 
-            <th>Serial Number</th>
-            <th>Parent Site Name</th>
-            <th>Parent Site Inst Id</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="shelf : ${shelfs}">
-            <td>
-                <div class="modal fade" th:id="${'shelfModal-' + shelf.shelfId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Shelf</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="#" th:action="@{/tni/shelfs}" th:object="${shelfDto}" method="post" id="updateForm">
-                                    <div class="form-group">
-                                        <label for="shelfNameInput">Shelf Name</label>
-                                        <input type="text" class="form-control" id="shelfNameInput" name="shelfName" th:value="${shelf.shelfName}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shelfIdInput">Shelf Id</label>
-                                        <input type="text" class="form-control" id="shelfIdInput" name="shelfId" th:value="${shelf.shelfId}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shelfTypeInput">Shelf Type</label>
-                                        <input type="text" class="form-control" id="shelfTypeInput" name="shelfType" th:value="${shelf.shelfType}" />
-                                    </div>
-<!--                                    <div class="form-group">-->
-<!--                                        <label for="statusInput">Status</label>-->
-<!--                                        <input type="text" class="form-control" id="statusInput" name="status" th:value="${shelf.status}" />-->
-<!--                                    </div>-->
-                                    <div class="form-group">
-                                        <label for="vendorInput">Vendor</label>
-                                        <input type="text" class="form-control" id="vendorInput" name="vendor" th:value="${shelf.vendor}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="modelInput">Model</label>
-                                        <input type="text" class="form-control" id="modelInput" name="model" th:value="${shelf.model}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="serialNumberInput">Serial Number</label>
-                                        <input type="text" class="form-control" id="serialNumberInput" name="serialNumber" th:value="${shelf.serialNumber}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="parentSiteNameInput">Parent Site Name</label>
-                                        <input type="text" class="form-control" id="parentSiteNameInput" name="parentSite" th:value="${shelf.parentSite}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="parentSiteIdInput">Parent Site Id</label>
-                                        <input type="text" class="form-control" id="parentSiteIdInput" name="parentSiteInstId" th:value="${shelf.parentSiteInstId}" />
-                                    </div>
+                <th>Serial Number</th>
+                <th>Parent Site Name</th>
+                <th>Parent Site Inst Id</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="shelf : ${shelves}">
+                <td>
+                    <div>
+                        <input type="checkbox" th:name="selectedRecordsIds" th:value="${shelf.shelfId}" />
+                    </div>
+                </td>
+                <td>
+                    <div class="modal fade" th:id="${'shelfModal-' + shelf.shelfId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Shelf</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="#" th:action="@{/tni/shelves}" th:object="${shelfDto}" method="post" id="updateForm">
+                                        <div class="form-group">
+                                            <label for="shelfNameInput">Shelf Name</label>
+                                            <input type="text" class="form-control" id="shelfNameInput" name="shelfName" th:value="${shelf.shelfName}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="shelfIdInput">Shelf Id</label>
+                                            <input type="text" class="form-control" id="shelfIdInput" name="shelfId" th:value="${shelf.shelfId}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="shelfTypeInput">Shelf Type</label>
+                                            <input type="text" class="form-control" id="shelfTypeInput" name="shelfType" th:value="${shelf.shelfType}" />
+                                        </div>
+    <!--                                    <div class="form-group">-->
+    <!--                                        <label for="statusInput">Status</label>-->
+    <!--                                        <input type="text" class="form-control" id="statusInput" name="status" th:value="${shelf.status}" />-->
+    <!--                                    </div>-->
+                                        <div class="form-group">
+                                            <label for="vendorInput">Vendor</label>
+                                            <input type="text" class="form-control" id="vendorInput" name="vendor" th:value="${shelf.vendor}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="modelInput">Model</label>
+                                            <input type="text" class="form-control" id="modelInput" name="model" th:value="${shelf.model}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="serialNumberInput">Serial Number</label>
+                                            <input type="text" class="form-control" id="serialNumberInput" name="serialNumber" th:value="${shelf.serialNumber}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="parentSiteNameInput">Parent Site Name</label>
+                                            <input type="text" class="form-control" id="parentSiteNameInput" name="parentSite" th:value="${shelf.parentSite}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="parentSiteIdInput">Parent Site Id</label>
+                                            <input type="text" class="form-control" id="parentSiteIdInput" name="parentSiteInstId" th:value="${shelf.parentSiteInstId}" />
+                                        </div>
 
 
-                                    <input type="hidden" name="shelfId" th:value="${shelf.shelfId}" />
-                                    <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="update-shelf" class="btn btn-primary">Update</button></div>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </form>
+                                        <input type="hidden" name="shelfId" th:value="${shelf.shelfId}" />
+                                        <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="update-shelf" class="btn btn-primary">Update</button></div>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <a th:text="${shelf.shelfName}" data-toggle="modal" th:data-target="${'#shelfModal-' + shelf.shelfId}">Shelf Name</a>
-            </td>
-            <td th:text="${shelf.shelfId}"></td>
-            <td th:text="${shelf.shelfType}"></td>
-<!--            <td th:text="${shelf.status}"></td>-->
-            <td th:text="${shelf.vendor}"></td>
-            <td th:text="${shelf.model}"></td>
-            <td th:text="${shelf.serialNumber}"></td>
-            <td th:text="${shelf.parentSite}"></td>
-            <td th:text="${shelf.parentSiteInstId}"></td>
+                    <a th:text="${shelf.shelfName}" data-toggle="modal" th:data-target="${'#shelfModal-' + shelf.shelfId}">Shelf Name</a>
+                </td>
+                <td th:text="${shelf.shelfId}"></td>
+                <td th:text="${shelf.shelfType}"></td>
+    <!--            <td th:text="${shelf.status}"></td>-->
+                <td th:text="${shelf.vendor}"></td>
+                <td th:text="${shelf.model}"></td>
+                <td th:text="${shelf.serialNumber}"></td>
+                <td th:text="${shelf.parentSite}"></td>
+                <td th:text="${shelf.parentSiteInstId}"></td>
 
-        </tr>
-        </tbody>
+            </tr>
+            </tbody>
 
-    </table>
-    <div th:if="${#lists.isEmpty(shelf)}" style="color: red">
-        <p th:text="${error}"></p>
+        </table>
+            <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
+            <div class="btn-group"><button type="submit" name="action" value="DeleteRecords" class="btn btn-primary" >Delete</button></div>
+        </form>
+        <div th:if="${#lists.isEmpty(shelf)}" style="color: red">
+            <p th:text="${error}"></p>
+        </div>
     </div>
-</div>
 </div>
 <div th:replace="fragments :: tni_footer" />
 </body>

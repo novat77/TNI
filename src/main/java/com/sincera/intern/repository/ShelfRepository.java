@@ -1,9 +1,11 @@
 package com.sincera.intern.repository;
 
 import com.sincera.intern.model.Shelf;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +39,11 @@ public interface ShelfRepository extends CrudRepository<Shelf, Integer> {
             @Param("serialNumber") String serialNumber,
             @Param("parentSite") String parentSite,
             @Param("parentSiteInstId") Integer parentSiteInstId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "TRUNCATE TABLE Shelf",nativeQuery = true)
+    void truncateShelf();
 
 //    @Query("SELECT a from Shelf a Where a.name like %:name%")
 //    List<Shelf> getShelfsFromWildcardName(@Param("name") String name);

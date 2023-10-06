@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,8 +22,10 @@ public interface SiteRepository extends CrudRepository<Site, Integer> {
     List<Site> getSitesFromName(@Param("name") String name);
     @Query("SELECT a.siteId from Site a Where a.siteName = :name")
     int getSiteIdFromName(@Param("name") String name);
-
-
+    @Modifying
+    @Transactional
+    @Query(value = "TRUNCATE TABLE Site",nativeQuery = true)
+    void truncateSite();
     @Query("SELECT s FROM Site s WHERE " +
             "(:siteName is null or :siteName = '' or s.siteName like %:siteName%) " +
             "AND (:Id is null or s.siteId = :Id) " +

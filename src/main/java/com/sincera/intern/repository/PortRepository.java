@@ -2,11 +2,15 @@ package com.sincera.intern.repository;
 
 import com.sincera.intern.model.Card;
 import com.sincera.intern.model.Port;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PortRepository extends CrudRepository<Port, Integer> {
     @Query("SELECT a from Port a Where a.portName = :portName")
@@ -31,4 +35,13 @@ public interface PortRepository extends CrudRepository<Port, Integer> {
             @Param("trail") String trail,
             @Param("parentCardId") Integer parentCardId,
             @Param("parentCardName") String parentCardName);
+
+    @Modifying
+    @Transactional
+    @Query(value = "TRUNCATE TABLE Port",nativeQuery = true)
+    void truncatePort();
+
+//    @Query("SELECT p FROM Port p WHERE p.cardSerialNumber = :cardSerialNumber")
+//    Optional<Port> getportbycardSN(
+//            @Param("cardSerialNumber") Integer cardSerialNumber);
 }
