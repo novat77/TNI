@@ -151,6 +151,23 @@ public class TNIController {
         return "truncate_table";
     }
 
+
+    @RequestMapping(value = "/tni/sites",method = RequestMethod.POST, params = "action=DeleteRecords")
+    public String deleteSelectedSites(@RequestParam(name = "selectedRecordsIds", required = false) List<Integer> selectedRecordsIds,Model model) {
+        log.info("SELECTED SITES FOR DEL=============================="+selectedRecordsIds);
+        try{
+            siteService.delete(selectedRecordsIds);
+        }catch (NullPointerException e){
+            log.info("NULL, so no operation was performed");
+        }
+        SiteDto siteDto = new SiteDto();
+        List<SiteDto> sites = siteService.listAll();
+        log.info("size of return================="+sites.size());
+        model.addAttribute("siteDto", siteDto);
+        model.addAttribute("sites",sites);
+        return "search_site";
+    }
+
     @RequestMapping(value = "/tni/sites", method = RequestMethod.POST, params = "action=update-site")
     public String updateSite(@ModelAttribute("siteDto") SiteDto siteDto, Model model) {
         log.info("Updating site: " + siteDto.toString());
@@ -187,6 +204,7 @@ public class TNIController {
     public String searchSite(@ModelAttribute("siteDto") SiteDto siteDto, Model model) {
         log.info("Site DTO from Controller = " + siteDto.toString());
         List<SiteDto> sites = siteService.getSites(siteDto);
+        log.info("Sites found: " + sites.size());
         if (sites.isEmpty()) {
             model.addAttribute("error", "No sites found.");
         } else {
@@ -213,11 +231,10 @@ public class TNIController {
         try{
             shelfService.delete(selectedRecordsIds);
         }catch (NullPointerException e){
-            log.info("NULL");
+            log.info("NULL, so no operation was performed");
         }
         ShelfDto shelfDto = new ShelfDto();
         List<ShelfDto> shelfDtoList = shelfService.listAll();
-        log.info("size of return================="+shelfDtoList.size());
         model.addAttribute("shelfDto", shelfDto);
         model.addAttribute("shelves",shelfDtoList);
         return "search_shelf";
@@ -257,9 +274,8 @@ public class TNIController {
     public String searchShelf(@ModelAttribute("shelfDto") ShelfDto shelfDto, Model model) {
         log.info("Shelf DTO from Controller = " + shelfDto.toString());
         List<ShelfDto> shelves = shelfService.getShelfs(shelfDto);
-        log.info("========================"+shelves.size());
         if (shelves.isEmpty()) {
-            model.addAttribute("error", "No shelfs found.");
+            model.addAttribute("error", "No shelves found.");
         } else {
             model.addAttribute("shelves", shelves);
         }
@@ -286,7 +302,7 @@ public class TNIController {
         try{
             slotService.delete(selectedRecordsIds);
         }catch (NullPointerException e){//lets try to give a interface where we provide them a message to select a record to delete
-            log.info("NULL");
+            log.info("NULL, so no operation was performed");
         }
         List<SlotDto> slots = slotService.listAll();
         SlotDto slotDto = new SlotDto();
@@ -348,7 +364,7 @@ public class TNIController {
         try{
             cardService.delete(selectedRecordsIds);
         }catch (NullPointerException e){
-            log.info("NULL");
+            log.info("NULL, so no operation was performed");
         }
         CardDto cardDto = new CardDto();
         List<CardDto> cards = cardService.listAll();
@@ -415,6 +431,23 @@ public class TNIController {
         model.addAttribute("statusList", statusList);
         model.addAttribute("shelfTypeList", shelfTypeList);
         return "new_card";
+    }
+
+    @RequestMapping(value = "/tni/ports/delete", method = RequestMethod.POST, params = "action=DeleteRecords")
+    public String deleteSelectedPorts(@RequestParam(name = "selectedRecordsIds", required = false) List<Integer> selectedRecordsIds,Model model) {
+        log.info("SELECTED PORTS FOR DEL=============================="+selectedRecordsIds);
+        try{
+            portService.delete(selectedRecordsIds);
+        }catch (NullPointerException e){
+            log.info("NULL, so no operation was performed");
+        }
+        PortDto portDto = new PortDto();
+        List<PortDto> ports = portService.listAll();
+        model.addAttribute("portDto", portDto);
+        model.addAttribute("ports",ports);
+        model.addAttribute("portTypeList",portTypeList);
+        model.addAttribute("portBandwidthList",portBandwidthList);
+        return "search_port";
     }
 
     @RequestMapping(value = "/tni/ports", method = RequestMethod.POST, params = "action=update-port")

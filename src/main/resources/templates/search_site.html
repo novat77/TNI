@@ -82,10 +82,13 @@
 
 
     <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
-        <div class="tbl-container" style="flex-grow: 1; margin-left: 5px; margin-right: 50px; width: 30%">
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Site List</h4>
+        <br />
+        <form th:if="${not #lists.isEmpty(sites)}" action="#"th:action="@{/tni/sites}" method="post">
             <table th:if="${not #lists.isEmpty(sites)}" border="1" cellpadding="10" class="table table-striped">
                 <thead>
                 <tr>
+                    <th>Selected</th>
                     <th>Site Name</th>
                     <th>Site Id</th>
                     <th>Site Type</th>
@@ -102,6 +105,11 @@
                 </thead>
                 <tbody>
                 <tr th:each="site : ${sites}">
+                    <td>
+                        <div>
+                            <input type="checkbox" th:name="selectedRecordsIds" th:value="${site.siteId}" />
+                        </div>
+                    </td>
                     <td>
                         <div class="modal fade" th:id="${'siteModal-' + site.siteId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -187,12 +195,14 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
+            <div class="btn-group"><button type="submit" name="action" value="DeleteRecords" class="btn btn-primary" >Delete</button></div>
+        </form>
 
             <div th:if="${#lists.isEmpty(sites)}" style="color: red">
                 <p th:text="${error}"></p>
             </div>
         </div>
-    </div>
 </div>
 <div th:replace="fragments :: tni_footer" />
 </body>

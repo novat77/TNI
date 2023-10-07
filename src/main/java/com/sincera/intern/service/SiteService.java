@@ -196,41 +196,14 @@ public class SiteService {
     public void truncateSite() {
         siteRepository.truncateSite();
     }
+
+    public void delete(List<Integer> selectedRecordsIds) {
+        for (Integer id : selectedRecordsIds) {
+            siteRepository.deleteById(id);
+        }
+    }
+
+    public List<SiteDto> listAll() {
+        return convertToSiteDtoList((List<Site>) siteRepository.findAll());
+    }
 }
-//        String name = siteDto.getSiteName();
-//        String status = siteDto.getStatus();
-//        String type = siteDto.getSiteType();
-//        String latitude = siteDto.getLatitude();
-//        String longitude = siteDto.getLongitude();
-//        String address1 = siteDto.getAddress1();
-//        String address2 = siteDto.getAddress2();
-//        String city = siteDto.getCity();
-//        String state = siteDto.getState();
-//        String country = siteDto.getCountry();
-//        Integer pin = siteDto.getPin();
-//        String createdBy = siteDto.getCreatedBy();
-//        LocalDate createdAt = siteDto.getCreatedAt();
-//        LocalDate lastModifiedAt = siteDto.getLastModifiedAt();
-//        Integer id = siteRepository.getSiteIdFromName(String.valueOf(siteDto));
-//        siteRepository.updateSitesByAttributes(status,type,latitude,longitude,address1,address2,city,state,country,pin,createdBy,createdAt,lastModifiedAt,id);
-        // Retrieve the site from the database based on the site name
-
-
-
-//    public  void  siteId(SiteDto siteDto){
-//        Integer id = siteRepository.getSiteIdFromName(String.valueOf(siteDto));
-//        updateSite(id);
-//    }
-
-//    private void updateSite(Integer id) {
-//        Optional<Site> mySite = siteRepository.findById(id);
-//        mapper.updateSiteFromDto(siteDto, mySite);
-//        siteRepository.save(mySite);
-//    }
-
-//    public void updateSiteFromDto(SiteDto siteDto) {
-//        Site mySite = siteRepository.findById(siteDto.getSiteId()).get();
-//        siteMapper.updateSiteFromDto(siteDto, mySite);
-//        siteRepository.save(mySite);
-//    }
-

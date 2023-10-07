@@ -5,9 +5,9 @@
 </head>
 <body>
 <div th:replace="fragments :: tni_menu"/>
-<div class="container" style="display: flex; height: 100px;">
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;">
     <div class="container">
-        <h4>New User</h4>
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">New User</h4>
         <br />
         <form action="#" th:action="@{/newUser}" th:object="${userDto}" method="post">
 

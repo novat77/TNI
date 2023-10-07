@@ -51,90 +51,100 @@
             <div class="btn btn-primary btn-lg"><button type="submit" name="action" value="search-port" class="btn btn-primary">Search</button></div>
         </form>
     </div>
-    <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
-        <table th:if="${not #lists.isEmpty(ports)}" border="1" cellpadding="10" class="table table-striped">
-            <thead>
-            <tr>
-                <th>Port Name</th>
-                <th>Port Type</th>
-                <th>Ip Address</th>
-                <th>Bandwidth</th>
-                <th>Trail</th>
-                <th>Parent Card Id</th>
-                <th>Parent Card Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="port : ${ports}">
-                <td>
-                    <div class="modal fade" th:id="${'portModal-' + port.portId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Port</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="#" th:action="@{/tni/ports}" th:object="${portDto}" method="post" id="updateForm">
-                                        <div class="form-group">
-                                            <label for="portNameInput">Port Name</label>
-                                            <input type="text" class="form-control" id="portNameInput" name="portName" th:value="${port.portName}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="portIdInput">Port Id</label>
-                                            <input type="text" class="form-control" id="portIdInput" name="portId" th:value="${port.portId}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="portTypeInput">Port Type</label>
-                                            <input type="text" class="form-control" id="portTypeInput" name="portType" th:value="${port.portType}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="ipAddressInput">IP Address</label>
-                                            <input type="text" class="form-control" id="ipAddressInput" name="ipAddress" th:value="${port.ipAddress}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="bandwidthInput">Bandwidth</label>
-                                            <input type="text" class="form-control" id="bandwidthInput" name="bandwidth" th:value="${port.bandwidth}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="trailInput">Trail</label>
-                                            <input type="text" class="form-control" id="trailInput" name="trail" th:value="${port.trail}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parentCardIdInput">Parent Card Id</label>
-                                            <input type="text" class="form-control" id="parentCardIdInput" name="parentCardId" th:value="${port.parentCardId}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parentCardNameInput">Parent Card Name</label>
-                                            <input type="text" class="form-control" id="parentCardNameInput" name="parentCardName" th:value="${port.parentCardName}" />
-                                        </div>
-                                        <!-- Add other attributes of Port here -->
 
-                                        <input type="hidden" name="portId" th:value="${port.portId}" />
-                                        <div class="btn btn-primary btn-lg">
-                                            <button type="submit" name="action" value="update-port" class="btn btn-primary">Update</button>
-                                        </div>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </form>
+    <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Port List</h4>
+        <br />
+        <form th:if="${not #lists.isEmpty(ports)}" action="#"th:action="@{/tni/ports/delete}" method="post">
+            <table th:if="${not #lists.isEmpty(ports)}" border="1" cellpadding="10" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Selected</th>
+                    <th>Port Name</th>
+                    <th>Port Type</th>
+                    <th>Ip Address</th>
+                    <th>Bandwidth</th>
+                    <th>Trail</th>
+                    <th>Parent Card Id</th>
+                    <th>Parent Card Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="port : ${ports}">
+                    <td>
+                        <div>
+                            <input type="checkbox" th:name="selectedRecordsIds" th:value="${port.portId}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="modal fade" th:id="${'portModal-' + port.portId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Port</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="#" th:action="@{/tni/ports}" th:object="${portDto}" method="post" id="updateForm">
+                                            <div class="form-group">
+                                                <label for="portNameInput">Port Name</label>
+                                                <input type="text" class="form-control" id="portNameInput" name="portName" th:value="${port.portName}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="portIdInput">Port Id</label>
+                                                <input type="text" class="form-control" id="portIdInput" name="portId" th:value="${port.portId}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="portTypeInput">Port Type</label>
+                                                <input type="text" class="form-control" id="portTypeInput" name="portType" th:value="${port.portType}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ipAddressInput">IP Address</label>
+                                                <input type="text" class="form-control" id="ipAddressInput" name="ipAddress" th:value="${port.ipAddress}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="bandwidthInput">Bandwidth</label>
+                                                <input type="text" class="form-control" id="bandwidthInput" name="bandwidth" th:value="${port.bandwidth}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="trailInput">Trail</label>
+                                                <input type="text" class="form-control" id="trailInput" name="trail" th:value="${port.trail}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="parentCardIdInput">Parent Card Id</label>
+                                                <input type="text" class="form-control" id="parentCardIdInput" name="parentCardId" th:value="${port.parentCardId}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="parentCardNameInput">Parent Card Name</label>
+                                                <input type="text" class="form-control" id="parentCardNameInput" name="parentCardName" th:value="${port.parentCardName}" />
+                                            </div>
+
+                                            <input type="hidden" name="portId" th:value="${port.portId}" />
+                                            <div class="btn btn-primary btn-lg">
+                                                <button type="submit" name="action" value="update-port" class="btn btn-primary">Update</button>
+                                            </div>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <a href="#" th:text="${port.portName}" data-toggle="modal" th:data-target="${'#portModal-' + port.portId}">Port Name</a>
-                </td>
-                <td th:text="${port.portType}">Port Type</td>
-                <td th:text="${port.ipAddress}">IP Address</td>
-                <td th:text="${port.bandwidth}">Bandwidth</td>
-                <td th:text="${port.trail}">Trail</td>
-                <td th:text="${port.parentCardId}">Parent Card Id</td>
-                <td th:text="${port.parentCardName}">Parent Card Name</td>
-                <!-- Add other table data for Port attributes -->
-            </tr>
-            </tbody>
-
-        </table>
+                        <a href="#" th:text="${port.portName}" data-toggle="modal" th:data-target="${'#portModal-' + port.portId}">Port Name</a>
+                    </td>
+                    <td th:text="${port.portType}">Port Type</td>
+                    <td th:text="${port.ipAddress}">IP Address</td>
+                    <td th:text="${port.bandwidth}">Bandwidth</td>
+                    <td th:text="${port.trail}">Trail</td>
+                    <td th:text="${port.parentCardId}">Parent Card Id</td>
+                    <td th:text="${port.parentCardName}">Parent Card Name</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
+            <div class="btn-group"><button type="submit" name="action" value="DeleteRecords" class="btn btn-primary" >Delete</button></div>
+        </form>
         <div th:if="${#lists.isEmpty(ports)}" style="color: red">
             <p th:text="${error}"></p>
         </div>

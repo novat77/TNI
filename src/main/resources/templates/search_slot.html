@@ -39,84 +39,86 @@
     </div>
     <br>
     <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Search Results</h4>
+        <br />
         <form th:if="${not #lists.isEmpty(slots)}" action="#"th:action="@{/tni/slots/delete}" method="post">
-        <table th:if="${not #lists.isEmpty(slots)}" border="1" cellpadding="10" class="table table-striped">
-            <thead>
-            <tr>
-                <th>Select</th>
-                <th>Slot Name</th>
-                <th>Parent Shelf Id</th>
-                <th>Parent Shelf Name</th>
-                <th>Parent Site Id</th>
-                <th>Parent Site Name</th>
-            </tr>
-            </thead>
-            <tbody>
+            <table th:if="${not #lists.isEmpty(slots)}" border="1" cellpadding="10" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Slot Name</th>
+                    <th>Parent Shelf Id</th>
+                    <th>Parent Shelf Name</th>
+                    <th>Parent Site Id</th>
+                    <th>Parent Site Name</th>
+                </tr>
+                </thead>
+                <tbody>
 
-            <tr th:each="slot : ${slots}">
-                <td>
-                    <div>
-                        <input type="checkbox" th:name="selectedRecordsIds" th:value="${slot.slotId}" />
-                    </div>
-                </td>
-                <td>
-                    <div class="modal fade" th:id="${'slotModal-' + slot.slotId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Slot</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post" id="updateForm">
-                                        <div class="form-group">
-                                            <label for="slotNameInput">Slot Name</label>
-                                            <input type="text" class="form-control" id="slotNameInput" name="slotName" th:value="${slot.slotName}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="slotIdInput">Slot Id</label>
-                                            <input type="text" class="form-control" id="slotIdInput" name="slotId" th:value="${slot.slotId}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parentShelfIdInput">Parent Shelf Id</label>
-                                            <input type="text" class="form-control" id="parentShelfIdInput" name="parentShelfId" th:value="${slot.parentShelfId}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parentShelfNameInput">Parent Shelf Name</label>
-                                            <input type="text" class="form-control" id="parentShelfNameInput" name="parentShelfName" th:value="${slot.parentShelfName}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parentSiteIdInput">Parent Site Id</label>
-                                            <input type="text" class="form-control" id="parentSiteIdInput" name="parentSiteId" th:value="${slot.parentSiteId}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="parentSiteNameInput">Parent Site Name</label>
-                                            <input type="text" class="form-control" id="parentSiteNameInput" name="parentSiteName" th:value="${slot.parentSiteName}" />
-                                        </div>
-                                        <!-- Add other attributes of Slot here -->
+                <tr th:each="slot : ${slots}">
+                    <td>
+                        <div>
+                            <input type="checkbox" th:name="selectedRecordsIds" th:value="${slot.slotId}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="modal fade" th:id="${'slotModal-' + slot.slotId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Slot</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="#" th:action="@{/tni/slots}" th:object="${slotDto}" method="post" id="updateForm">
+                                            <div class="form-group">
+                                                <label for="slotNameInput">Slot Name</label>
+                                                <input type="text" class="form-control" id="slotNameInput" name="slotName" th:value="${slot.slotName}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="slotIdInput">Slot Id</label>
+                                                <input type="text" class="form-control" id="slotIdInput" name="slotId" th:value="${slot.slotId}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="parentShelfIdInput">Parent Shelf Id</label>
+                                                <input type="text" class="form-control" id="parentShelfIdInput" name="parentShelfId" th:value="${slot.parentShelfId}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="parentShelfNameInput">Parent Shelf Name</label>
+                                                <input type="text" class="form-control" id="parentShelfNameInput" name="parentShelfName" th:value="${slot.parentShelfName}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="parentSiteIdInput">Parent Site Id</label>
+                                                <input type="text" class="form-control" id="parentSiteIdInput" name="parentSiteId" th:value="${slot.parentSiteId}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="parentSiteNameInput">Parent Site Name</label>
+                                                <input type="text" class="form-control" id="parentSiteNameInput" name="parentSiteName" th:value="${slot.parentSiteName}" />
+                                            </div>
+                                            <!-- Add other attributes of Slot here -->
 
-                                        <input type="hidden" name="slotId" th:value="${slot.slotId}" />
-                                        <div class="btn btn-primary btn-lg">
-                                            <button type="submit" name="action" value="update-slot" class="btn btn-primary">Update</button>
-                                        </div>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </form>
+                                            <input type="hidden" name="slotId" th:value="${slot.slotId}" />
+                                            <div class="btn btn-primary btn-lg">
+                                                <button type="submit" name="action" value="update-slot" class="btn btn-primary">Update</button>
+                                            </div>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <a href="#" th:text="${slot.slotName}" data-toggle="modal" th:data-target="${'#slotModal-' + slot.slotId}">Slot Name</a>
-                </td>
-                <td th:text="${slot.parentShelfId}"></td>
-                <td th:text="${slot.parentShelfName}"></td>
-                <td th:text="${slot.parentSiteId}"></td>
-                <td th:text="${slot.parentSiteName}"></td>
-            </tr>
+                        <a href="#" th:text="${slot.slotName}" data-toggle="modal" th:data-target="${'#slotModal-' + slot.slotId}">Slot Name</a>
+                    </td>
+                    <td th:text="${slot.parentShelfId}"></td>
+                    <td th:text="${slot.parentShelfName}"></td>
+                    <td th:text="${slot.parentSiteId}"></td>
+                    <td th:text="${slot.parentSiteName}"></td>
+                </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
             <div class="btn-group"><button type="reset" class="btn btn-primary">Reset</button></div>
             <div class="btn-group"><button type="submit" name="action" value="DeleteRecords" class="btn btn-primary" >Delete</button></div>
         </form>

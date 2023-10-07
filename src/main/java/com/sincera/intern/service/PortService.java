@@ -146,4 +146,14 @@ public class PortService {
     public void truncatePort() {
         portRepository.truncatePort();
     }
+
+    public void delete(List<Integer> selectedRecordsIds) {
+        for (Integer id : selectedRecordsIds) {
+            portRepository.deleteById(id);
+        }
+    }
+
+    public List<PortDto> listAll() {
+        return convertToPortDtoList((List<Port>) portRepository.findAll());
+    }
 }
