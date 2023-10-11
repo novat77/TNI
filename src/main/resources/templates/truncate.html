@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head">
+</head>
+<body>
+<div th:replace="fragments :: tni_menu"/>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+  <div class="tbl-container" style="margin-left: 0px; margin-right: 15px width: 30%" >
+    <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">TRUNCATE</h4>
+  <br>
+  <div class="container tbl-container">
+    <br>
+    <form action="#" th:action="@{/tni/truncate}" th:object="${truncateDto}" method="post">
+      <table border="0" cellpadding="10" class="table table-striped">
+        <tr>
+          <td><label>Table Name:</label></td>
+          <td>
+            <select th:field="*{tableName}" class="form-control form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+              <option th:each="i : ${truncateList}" th:value="${i}" th:text="${i}"></option>
+            </select>
+          </td>
+        </tr>
+        </table>
+
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Truncate Table
+      </button>
+
+        <!-- Modal -->
+      <div class="modal fade" th:id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" style="color: red">TRUNCATE ALERT!!!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              By clicking on truncate button, you will delete all the data from the table. Are you sure you want to continue?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button class="btn" type="submit" name="action" value="truncate"  >Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<div th:replace="fragments :: tni_footer" />
+</body>
+</html>

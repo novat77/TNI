@@ -118,10 +118,16 @@ public class TNIController {
 //        return "new_site";
 //    }
 
+
+    @RequestMapping(value = "/TestingConnection")
+    public void testconnction(@RequestBody String x){
+        log.info("Testing connection=================="+x);
+    }
+
     @RequestMapping(value = "/tni/truncate", method = RequestMethod.POST, params = "action=truncate")
     public String truncateTable(@ModelAttribute("truncateDto") TruncateDto truncateDto, Model model) {
         log.info("Truncate DTO from Controller = " + truncateDto.toString());
-        String truncateTable = truncateDto.getTruncateTable();
+        String truncateTable = truncateDto.getTableName();
         if (truncateTable.equals("site")) {
             siteService.truncateSite();
             shelfService.truncateShelf();
@@ -148,7 +154,16 @@ public class TNIController {
         TruncateDto dto = new TruncateDto();
         model.addAttribute("truncateDto", dto);
         model.addAttribute("truncateList", truncateList);
-        return "truncate_table";
+        return "truncate";
+    }
+
+    @RequestMapping(value = "/tni/truncate")
+    public String loadTruncateTable(Model model) {
+        TruncateDto truncateDto = new TruncateDto();
+        log.info("========================="+truncateDto.toString());
+        model.addAttribute("truncateDto", truncateDto);
+        model.addAttribute("truncateList", truncateList);
+        return "truncate";
     }
 
 
@@ -187,6 +202,7 @@ public class TNIController {
             return "new_site";
         }
         log.info("Site DTO from Controller = "+siteDto.toString());
+        log.info("FROM FRONTEND====================="+siteDto);
         SiteDto dto = siteService.createAndGetSite(siteDto);
         if (dto == null) {
             model.addAttribute("error", "Site name already exists : " + siteDto.getSiteName());
@@ -219,6 +235,7 @@ public class TNIController {
     @RequestMapping("/tni/site")
     public String loadSite (Model model) {
         SiteDto siteDto = new SiteDto();
+        log.info("Site DTO from Controller = " + siteDto.toString());
         model.addAttribute("siteDto", siteDto);
         model.addAttribute("statusList", statusList);
         model.addAttribute("siteTypeList", siteTypeList);

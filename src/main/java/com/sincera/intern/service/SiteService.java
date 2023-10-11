@@ -26,7 +26,7 @@ public class SiteService {
     SiteRepository siteRepository;
 //    @Autowired
 //    SiteMapper siteMapper;
-    //hey there this is teck
+    //hey there this is tech
     //testing the branch
 
     public SiteDto createAndGetSite(SiteDto siteDto) {
@@ -58,12 +58,13 @@ public class SiteService {
                 site.setLastModifiedAt(LocalDate.now());
                 site.setCreatedBy(siteDto.getCreatedBy());
 
-                log.info("Site to be created = " + site.toString());
+                log.info("Site to be created = " + site);
 
                 siteRepository.save(site);
 
-                log.info("Site created successfully");
-                response = "Site Created Successfully with data \n" + site.toString();
+                response = "Site Created Successfully with data \n" + site;
+                log.info("=============================="+response);
+
 
                 Site siteCreated = getSite(siteDto);
                 if (siteCreated != null) {
