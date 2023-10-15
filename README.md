@@ -23,6 +23,7 @@ Our team is also actively working on implementing an AI and Machine Learning-bas
 Our tech stack comprises:
 
 - [Java](#)
+- [Maven](#)
 - [Python](#)
 - [Flask](#)
 - [HTML](#)
