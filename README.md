@@ -81,7 +81,7 @@ I would like to express my sincere gratitude to [Sincera Consultancy](https://ww
 
 Special thanks to the mentors who provided invaluable insights and guidance throughout the project:
 
-- [Dhruv G](#): Dhruv G played a pivotal role in the project, sharing extensive knowledge and expertise in both front-end and backend developement.
+- [Dhruv G](#): Dhruv G played a pivotal role in the project, sharing extensive knowledge and expertise in both front-end and backend developement. To starting the application from scratch and building the web application on java springBoot MVC as a maven project .
 
 - [Srivastsa G](#): Srivastsa G's mentorship and guidance were instrumental in shaping the architecture and design of the TNI project.
 
