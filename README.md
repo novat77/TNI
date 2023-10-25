@@ -85,7 +85,7 @@ Special thanks to the mentors who provided invaluable insights and guidance thro
 
 - [Srivastsa G](#): Srivastsa G's mentorship and guidance were instrumental in shaping the architecture and design of the TNI project.
 
-- Kamal: Kamal's contributions to the project, particularly in the areas of AI and Machine Learning integration, were highly commendable. Also was guid for Flask API integration significantly enhanced the application's functionality.
+- [Kamal](https://www.linkedin.com/in/kamal-nath-tiwari-61143a67/): Kamal's contributions to the project, particularly in the areas of AI and Machine Learning integration, were highly commendable. Also was guid for Flask API integration significantly enhanced the application's functionality.
 
 - Prudvi: Prudvi's expertise in back end development for reading, validating and loading the data into the DB after importing it form excel file.
 
