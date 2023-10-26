@@ -87,7 +87,7 @@ Special thanks to the mentors who provided invaluable insights and guidance thro
 
 - [Kamal](https://www.linkedin.com/in/kamal-nath-tiwari-61143a67/): Kamal's contributions to the project, particularly in the areas of AI and Machine Learning integration, were highly commendable. Also was guid for Flask API integration significantly enhanced the application's functionality.
 
-- Prudvi: Prudvi's expertise in back end development for reading, validating and loading the data into the DB after importing it form excel file.
+- [Prudvi](https://www.linkedin.com/in/prudvi-g-a4a871269/): Prudvi's expertise in back end development for reading, validating and loading the data into the DB after importing it form excel file.
 
 - [Anand GP](https://www.linkedin.com/in/anand-gp-58963b26/): Anand GP's dedication and attention to detail in inventory management have greatly improved the project's data accuracy and efficiency.
  
