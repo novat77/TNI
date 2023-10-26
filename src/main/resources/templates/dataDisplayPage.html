@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head" />
+<body>
+<div th:replace="fragments :: tni_menu" />
+<div class="container" style="margin-left: 45px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; margin-top: 30px;">
+  <div class="tbl-container" style="width: 80%">
+    <h1>Duplicate Records</h1>
+    <br />
+    <div th:each="clusterEntry : ${cluster}">
+      <div class="cluster">
+        <h2 th:text="'Cluster ' + ${clusterEntry.key}"></h2>
+        <table style="border-collapse: collapse; width: 100%;">
+          <thead>
+          <tr>
+            <th>Site Name</th>
+            <th>Status</th>
+            <th>Site Type</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Address 1</th>
+            <th>Address 2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Country</th>
+            <th>PIN</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="site : ${clusterEntry.value}">
+            <td>
+              <span th:text="${site.siteName}" th:if="${site.siteName != null}" th:unless="${site.siteName == ''}"></span>
+              <span th:if="${site.siteName == null || site.siteName == ''}">Site Name Missing</span>
+            </td>
+            <td th:text="${site.status}"></td>
+            <td th:text="${site.siteType}"></td>
+            <td th:text="${site.latitude}"></td>
+            <td th:text="${site.longitude}"></td>
+            <td th:text="${site.address1}"></td>
+            <td th:text="${site.address2}"></td>
+            <td th:text="${site.city}"></td>
+            <td th:text="${site.state}"></td>
+            <td th:text="${site.country}"></td>
+            <td th:text="${site.pin}"></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="fragments :: tni_footer" />
+</body>
+</html>

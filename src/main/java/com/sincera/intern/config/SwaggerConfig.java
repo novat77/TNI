@@ -3,6 +3,7 @@ package com.sincera.intern.config;
 import com.google.common.base.Predicate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
@@ -29,5 +30,10 @@ public class SwaggerConfig {
         return new ApiInfoBuilder().title("Intern Telecom Inventory")
                 .description("Intern Telecom Inventory")
                 .build();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }

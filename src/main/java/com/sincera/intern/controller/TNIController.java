@@ -1,6 +1,8 @@
 package com.sincera.intern.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sincera.intern.dto.*;
 import com.sincera.intern.model.*;
 import com.sincera.intern.repository.RoleRepository;
@@ -11,24 +13,35 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import javax.validation.Valid;
 import java.io.File;
-import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 @Controller
 public class TNIController {
 
@@ -49,6 +62,8 @@ public class TNIController {
     MasterService masterService;
     @Autowired
     UserService userService;
+    @Autowired
+    DataProcessingService dataProcessingService;
     @Autowired
     SiteRepository siteRepository;
 
@@ -74,9 +89,11 @@ public class TNIController {
     @Value("#{'${inventory.port.bw.list}'.split(',')}")
     private List<String> portBandwidthList;
 
-    @Value("#{'${inventory.truncate.list}'.split(',')}")
-    private List<String> truncateList;
+    @Value("#{'${inventory.entity.list}'.split(',')}")
+    private List<String> entitylist;
 
+    @Value("#{'${inventory.download.list}'.split(',')}")
+    private List<String> downloadList;
 //    @PostMapping(path = "/site/create")
 //    public ResponseEntity<SiteDto> createSite(@RequestBody SiteDto siteDto) throws JsonProcessingException {
 //        ResponseEntity<SiteDto> response = null;
@@ -118,16 +135,200 @@ public class TNIController {
 //        return "new_site";
 //    }
 
+    @Autowired
+    private RestTemplate restTemplate;
 
-    @RequestMapping(value = "/TestingConnection")
-    public void testconnction(@RequestBody String x){
-        log.info("Testing connection=================="+x);
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+
+    @RequestMapping(value = "/java/api/sendCsvPath", method = RequestMethod.POST, params = "action=getPath")
+    public String sendCsvPath(@RequestParam(name = "csvPathRequest") String csvPathRequest, Model model) {
+        try {
+            log.info("CSV Path Request: " + csvPathRequest);
+
+            String flaskEndpointUrl = "http://localhost:5000/tni/api/sendingCSVPath";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            csvPathRequest = csvPathRequest.replace("\\", "\\\\");
+            log.info("CSV Path Request after modify: " + csvPathRequest);
+
+            // Create a request entity with JSON data
+            String jsonData = "{\"csvPathRequest\": \"" + csvPathRequest + "\"}";
+            HttpEntity<String> requestEntity = new HttpEntity<>(jsonData, headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(flaskEndpointUrl, requestEntity, String.class);
+            HttpStatus statusCode = response.getStatusCode();
+            String responseBody = response.getBody();
+            HttpHeaders responseHeaders = response.getHeaders();
+
+            log.info("\n\n\n\n\n\n\nHTTP Status Code:====================================== " + statusCode);
+            log.info("\n\n\n\n\nResponse Body:============================================ " + responseBody);
+            log.info("\n\n\n\n\nResponse Headers:=============================== " + responseHeaders);
+
+            Map<String, List<SiteDto>> data = dataProcessingService.processJsonData(responseBody);
+            model.addAttribute("cluster", data);
+
+            return "dataDisplayPage";
+        } catch (IOException e) {
+            // Handle the exception, log it, or return an error response as needed.
+            e.printStackTrace(); // Example: Print the stack trace
+            return "dataDisplayPage"; // You can create a dedicated error page.
+        }
     }
 
+
+
+
+    @RequestMapping(value = "/java/api/sendCsvPath")
+    public String loadSendCsvPath() {
+        return "selectPath";
+    }
+
+//    Use RestTemplate to Make a Request
+    @RequestMapping(value = "/tni/api", method = RequestMethod.POST)
+    public void testConnectionInMakeRequest(){
+        String apiUrl = "http://localhost:5000/TestingConnection";
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
+
+        // Process the response
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        String responseBody = responseEntity.getBody();
+        log.info("Response status code: " + statusCode);
+        log.info("Response body: " + responseBody);
+    }
+
+//    Using WebClient
+    @RequestMapping(value = "/TestingConnection2")
+    public void testConnectionInWebClient(){
+        String apiUrl = "http://localhost:5000/TestingConnection";
+        String responseBody = webClientBuilder.build()
+                .get()
+                .uri(apiUrl)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        log.info("Response body: " + responseBody);
+
+    }
+
+
+    @GetMapping("/users/export")
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
+        response.setHeader(headerKey, headerValue);
+
+        List<User> listUsers = userService.listAll();
+
+        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+        String[] csvHeader = {"User ID", "Name", "Enabled", "Roles"};
+        String[] nameMapping = {"id", "username", "enabled", "roles"};
+
+        csvWriter.writeHeader(csvHeader);
+
+        for (User user : listUsers) {
+            //JavaBean-style getter methods.
+            csvWriter.write(user, nameMapping);
+        }
+
+        csvWriter.close();
+
+    }
+
+    @RequestMapping(value = "/tni/getCSV", method = RequestMethod.POST, params = "action=getEntity")
+    public String getEntityToCSV(@ModelAttribute("entityDto") EntityDto entityDto, HttpServletResponse response,Model model) {
+        log.info("GetEntity DTO from Controller = " + entityDto.toString());
+        String entity = entityDto.getTableName();
+        String csv = "";
+        response.setContentType("text/csv");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        if (entity.equals("site")) {
+            csv = siteService.getSiteToCSV();
+
+            String headerValue = "attachment; filename=sites_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.write(csv);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else if (entity.equals("shelf")) {
+            csv = shelfService.getShelfToCSV();
+
+            String headerValue = "attachment; filename=shelves_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.write(csv);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (entity.equals("slot")) {
+            csv = slotService.getSlotToCSV();
+
+            String headerValue = "attachment; filename=slots_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.write(csv);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (entity.equals("card")) {
+            csv = cardService.getCardToCSV();
+
+            String headerValue = "attachment; filename=cards_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.write(csv);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else if (entity.equals("port")) {
+            csv = portService.getPortToCSV();
+
+            String headerValue = "attachment; filename=ports_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.write(csv);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            log.error("Invalid entity name: " + entity);
+        }
+        log.info("CSV: \n\n" + csv);
+        model.addAttribute("result", "Generated CSV Data: " + csv.toString());
+        model.addAttribute("entityDto", entityDto);
+        model.addAttribute("entityList", entitylist);
+        model.addAttribute("downloadList", downloadList);
+        return "select_entity_to_csv";
+    }
+
+    @RequestMapping(value = "/tni/getCSV")
+    public String loadGetEntity(Model model) {
+        EntityDto entityDto = new EntityDto();
+        log.info("========================="+ entityDto.toString());
+        model.addAttribute("entityDto", entityDto);
+        model.addAttribute("entityList", entitylist);
+        model.addAttribute("downloadList", downloadList);
+        return "select_entity_to_csv";
+    }
+    
     @RequestMapping(value = "/tni/truncate", method = RequestMethod.POST, params = "action=truncate")
-    public String truncateTable(@ModelAttribute("truncateDto") TruncateDto truncateDto, Model model) {
-        log.info("Truncate DTO from Controller = " + truncateDto.toString());
-        String truncateTable = truncateDto.getTableName();
+    public String truncateTable(@ModelAttribute("truncateDto") EntityDto entityDto, Model model) {
+        log.info("Truncate DTO from Controller = " + entityDto.toString());
+        String truncateTable = entityDto.getTableName();
         if (truncateTable.equals("site")) {
             siteService.truncateSite();
             shelfService.truncateShelf();
@@ -151,18 +352,19 @@ public class TNIController {
         } else {
             log.error("Invalid table name: " + truncateTable);
         }
-        TruncateDto dto = new TruncateDto();
-        model.addAttribute("truncateDto", dto);
-        model.addAttribute("truncateList", truncateList);
+        EntityDto dto = new EntityDto();
+        model.addAttribute("entityDto", dto);
+        model.addAttribute("entityList", entitylist);
         return "truncate";
     }
 
     @RequestMapping(value = "/tni/truncate")
     public String loadTruncateTable(Model model) {
-        TruncateDto truncateDto = new TruncateDto();
-        log.info("========================="+truncateDto.toString());
-        model.addAttribute("truncateDto", truncateDto);
-        model.addAttribute("truncateList", truncateList);
+        EntityDto entityDto = new EntityDto();
+        log.info("Load========================="+ entityDto.toString());
+        model.addAttribute("entityDto", entityDto);
+        model.addAttribute("entityList", entitylist);
+        log.info("Load========================="+ entitylist.toString());
         return "truncate";
     }
 
@@ -199,6 +401,8 @@ public class TNIController {
     @RequestMapping(value = "/tni/sites", method = RequestMethod.POST, params="action=create-site")
         public String saveSingleSite(@Valid @ModelAttribute("siteDto") SiteDto siteDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("statusList", statusList);
+            model.addAttribute("siteTypeList", siteTypeList);
             return "new_site";
         }
         log.info("Site DTO from Controller = "+siteDto.toString());
@@ -271,13 +475,17 @@ public class TNIController {
     @RequestMapping(value = "/tni/shelves", method = RequestMethod.POST, params = "action=create-shelf")
     public String saveSingleShelf(@Valid @ModelAttribute("shelfDto") ShelfDto shelfDto,BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("statusList", statusList);
+            model.addAttribute("shelfTypeList", shelfTypeList);
             return "new_shelf";
+
         }
         log.info("Shelf DTO from Controller = " + shelfDto.toString());
         ShelfDto dto = shelfService.createAndGetShelf(shelfDto);
         if (dto.getErrorMessage() != null) {
             String errorMessage = dto.getErrorMessage().trim();
             model.addAttribute("error", errorMessage);
+
             return "new_shelf";
         }
         List<ShelfDto> shelves = new ArrayList<>();

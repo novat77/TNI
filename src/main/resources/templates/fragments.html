@@ -57,11 +57,71 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Telecom Network Inventory</a>
+            <a class="navbar-brand" href="/tni">Telecom Network Inventory</a>
         </div>
         <div sec:authorize="hasAnyAuthority('ADMIN')">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/tni">Home</a></li>
+                <li><a href="/tni">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Objects<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/tni/site">Site</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/shelf">Shelf</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/slot">Slot</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/card">Card</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/port">Port</a></li>
+
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Load Data <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/tni/loadMaster">Data Import</a></li>
+<!--                        <li class="divider"></li>-->
+<!--                        <li><a href="/tni/loadManual">Load Manual</a></li>-->
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/tni/truncate">Clear Source Data</a></li>
+                        <li><a href="/tni/getCSV">Generate CSV File</a></li>
+                        <li><a href="/java/api/sendCsvPath">Find Duplicate Data</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">User Management</li>
+                        <li><a href="/newUser">Create New User</a></li>
+                        <li><a href="/allUsers">All Users</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div sec:authorize="hasAnyAuthority('USER')">
+            <ul class="nav navbar-nav">
+                <li><a href="/tni">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Objects<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/tni/site">Site</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/shelf">Shelf</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/slot">Slot</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/card">Card</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/tni/port">Port</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div sec:authorize="hasAnyAuthority('SUPERUSER')">
+            <ul class="nav navbar-nav">
+                <li><a href="/tni">Home</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Objects<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -82,64 +142,6 @@
                     <ul class="dropdown-menu">
                         <li><a href="/tni/loadMaster">Load Master</a></li>
 <!--                        <li class="divider"></li>-->
-<!--                        <li><a href="/tni/loadManual">Load Manual</a></li>-->
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/tni/truncate">Truncate Table</a></li>
-                        <li class="divider"></li>
-                        <li class="dropdown-header">User Management</li>
-                        <li><a href="/newUser">Create New User</a></li>
-                        <li><a href="/allUsers">All Users</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div sec:authorize="hasAnyAuthority('USER')">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/tni">Home</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Objects<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/tni/site">Site</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/shelf">Shelf</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/slot">Slot</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/card">Card</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/port">Port</a></li>
-
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div sec:authorize="hasAnyAuthority('SUPERUSER')">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/tni">Home</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Objects<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/tni/site">Site</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/shelf">Shelf</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/slot">Slot</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/card">Card</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/tni/port">Port</a></li>
-
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Load Data <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/tni/loadMaster">Load Master</a></li>
-                        <li class="divider"></li>
 <!--                        <li><a href="/tni/loadManual">Load Manual</a></li>-->
                     </ul>
                 </li>

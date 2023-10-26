@@ -1,5 +1,6 @@
 package com.sincera.intern.service;
 
+import com.opencsv.CSVWriter;
 import com.sincera.intern.dto.SiteDto;
 
 //import com.sincera.intern.mapper.SiteMapper;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,5 +209,30 @@ public class SiteService {
 
     public List<SiteDto> listAll() {
         return convertToSiteDtoList((List<Site>) siteRepository.findAll());
+    }
+
+    public String getSiteToCSV() {
+        List<Site> data = (List<Site>) siteRepository.findAll(); // Fetch data from the repository
+
+        // Convert data to CSV format
+        StringWriter writer = new StringWriter();
+        try (CSVWriter csvWriter = new CSVWriter(writer)) {
+            String[] header = { "siteId", "siteName","status", "siteType","latitude", "longitude","address1", "address2","city", "state","country", "pin" }; // Replace with your column names
+            csvWriter.writeNext(header);
+
+            for (Site entity : data) {
+                String[] row = {String.valueOf(entity.getSiteId()), entity.getSiteName(), entity.getStatus(), entity.getSiteType(),entity.getLatitude(),entity.getLongitude(), entity.getAddress1(), entity.getAddress2() , entity.getCity(),entity.getState(), entity.getCountry(), String.valueOf(entity.getPin())}; // Replace with your entity fields
+                csvWriter.writeNext(row);
+            }
+        } catch (IOException e) {
+            // Handle the exception
+        }
+
+
+        log.info("CSV DATA==============================\n\n"+writer.toString());
+        String csvData = writer.toString();
+
+        // You can return the CSV data or save it to a file, depending on your use case
+        return csvData;
     }
 }

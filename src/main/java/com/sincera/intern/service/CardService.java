@@ -1,8 +1,8 @@
 package com.sincera.intern.service;
 
+import com.opencsv.CSVWriter;
 import com.sincera.intern.dto.CardDto;
-import com.sincera.intern.model.Card;
-import com.sincera.intern.model.Port;
+import com.sincera.intern.model.*;
 import com.sincera.intern.repository.*;
 import com.sincera.intern.util.CardValidation;
 import org.springframework.beans.BeanUtils;
@@ -10,7 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -202,5 +207,28 @@ public class CardService {
 
     public void truncateCard() {
         cardRepository.truncateCard();
+    }
+
+    public String getCardToCSV() {
+        List<Card> cards = (List<Card>) cardRepository.findAll();
+        StringWriter writer = new StringWriter();
+        try (CSVWriter csvWriter = new CSVWriter(writer)) {
+            String[] header = { "cardId", "cardName","cardSerialNumber", "networkId","parentSlotId", "parentSlotName","parentShelfId", "parentShelfName","parentSite","parentSiteInstId" }; // Replace with your column names
+            csvWriter.writeNext(header);
+
+            for (Card entity : cards) {
+                String[] row = {String.valueOf(entity.getCardId()),entity.getCardName(),entity.getCardSerialNumber(), String.valueOf(entity.getNetworkId()), String.valueOf(entity.getSlotId()), entity.getSlotName(), String.valueOf(entity.getShelfId()),entity.getShelfName(), String.valueOf(entity.getParentSiteId()),entity.getParentSiteName()}; // Replace with your entity fields
+                csvWriter.writeNext(row);
+            }
+        } catch (IOException e) {
+            // Handle the exception
+        }
+
+
+        log.info("CSV DATA==============================\n\n"+writer.toString());
+        String csvData = writer.toString();
+
+        // You can return the CSV data or save it to a file, depending on your use case
+        return csvData;
     }
 }

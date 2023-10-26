@@ -47,9 +47,9 @@ public class SiteValidation {
             if (site.getAddress1() == null || site.getAddress1().isEmpty()) {
                 errorMessage.add("Address 1 cannot be empty.");
             }
-            if (site.getAddress2() == null || site.getAddress2().isEmpty()) {
-                errorMessage.add("Address 2 cannot be empty.");
-            }
+//            if (site.getAddress2() == null || site.getAddress2().isEmpty()) {
+//                errorMessage.add("Address 2 cannot be empty.");
+//            }
             if (site.getCity() == null || site.getCity().isEmpty()) {
                 errorMessage.add("City cannot be empty.");
             }

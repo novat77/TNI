@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head">
+</head>
+<body>
+<div th:replace="fragments :: tni_menu"/>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+    <div class="container">
+        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Convert To CSV</h4>
+        <br>
+<!--        <div class="container tbl-container">-->
+            <br>
+            <form action="#" th:action="@{/tni/getCSV}" th:object="${entityDto}" method="post">
+                <table border="0" cellpadding="10" class="table table-striped">
+                    <tr>
+                        <td><label>Object Name:</label></td>
+                        <td>
+                            <select th:field="*{tableName}" class="form-control form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                <option th:each="i : ${entityList}" th:value="${i}" th:text="${i}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <button class="btn" type="submit" name="action" value="getEntity">Generate CSV</button>
+
+            </form>
+<!--        </div>-->
+    </div>
+
+<!--    <div class="table-responsive" style="flex-grow: 1;margin-left: 60px;margin-right: 53px;width: 90%;min-height: 347pt;" >-->
+<!--        <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Results</h4>-->
+<!--        <br />-->
+<!--        <p th:text="${result}"></p>-->
+<!--    </div>-->
+</div>
+<div th:replace="fragments :: tni_footer" />
+</body>
+</html>

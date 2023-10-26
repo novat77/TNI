@@ -1,6 +1,8 @@
 package com.sincera.intern.service;
 
+import com.opencsv.CSVWriter;
 import com.sincera.intern.dto.PortDto;
+import com.sincera.intern.model.Card;
 import com.sincera.intern.model.Port;
 import com.sincera.intern.repository.CardRepository;
 import com.sincera.intern.repository.PortRepository;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,4 +160,28 @@ public class PortService {
     public List<PortDto> listAll() {
         return convertToPortDtoList((List<Port>) portRepository.findAll());
     }
+
+    public String getPortToCSV() {
+        List<Port> ports = (List<Port>) portRepository.findAll();
+        StringWriter writer = new StringWriter();
+        try (CSVWriter csvWriter = new CSVWriter(writer)) {
+            String[] header = { "portId", "portName","portType", "ipAddress","bandwidth", "trail","parentCardId", "parentCardName" }; // Replace with your column names
+            csvWriter.writeNext(header);
+
+            for (Port entity : ports) {
+                String[] row = {String.valueOf(entity.getPortId()),entity.getPortName(),entity.getPortType(),entity.getIpAddress(),entity.getBandwidth(),entity.getTrail(),String.valueOf(entity.getParentCardId()),entity.getParentCardName()}; // Replace with your entity fields
+                csvWriter.writeNext(row);
+            }
+        } catch (IOException e) {
+            // Handle the exception
+        }
+
+        log.info("CSV DATA==============================\n\n"+writer.toString());
+        String csvData = writer.toString();
+
+        // You can return the CSV data or save it to a file, depending on your use case
+        return csvData;
+    }
+
+
 }

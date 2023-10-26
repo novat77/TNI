@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: tni_head" >
+    <title>CSV Path Input</title>
+</head>
+<body>
+<div th:replace="fragments :: tni_menu"/>
+<div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;flex-wrap: wrap;justify-content: space-between;align-content: stretch;align-items: center;">
+    <div class="container">
+    <br>
+    <h4 style="padding: 10px;margin: auto;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Find Duplicates Using AI/ML Algorithm</h4>
+        <br>
+<!--        <div class="container tbl-container">-->
+            <br>
+            <form action="#" th:action="@{/java/api/sendCsvPath}"  method="post">
+                <table border="0" cellpadding="10" class="table table-bordered">
+                    <tr>
+                        <td>Select CSV File:</td>
+                        <td><input type="file" id="csvPathRequest" th:name="csvPathRequest"></td>
+                    </tr>
+                </table>
+                <button type="submit" name="action" value="getPath" class="btn btn-primary">Find Duplicates</button>
+            </form>
+<!--        </div>-->
+    </div>
+</div>
+<div th:replace="fragments :: tni_footer" />
+</body>
+</html>

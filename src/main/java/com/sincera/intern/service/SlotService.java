@@ -189,4 +189,21 @@ public class SlotService {
     public void truncateSlot() {
         slotRepository.truncateSlot();
     }
+
+    public String getSlotToCSV() {
+        List<Slot> slots = (List<Slot>)slotRepository.findAll();
+        String csv = "slotId,slotName,parentShelfId,parentShelfName,parentSiteId,parentSiteName\n";
+        if(!slots.isEmpty()) {
+            //we use the iterator because of the beanutils.copyproperties which is a bit wise operation
+            Iterator<Slot> slotItr = slots.iterator();
+            while(slotItr.hasNext()) {
+                Slot slot = slotItr.next();
+                csv += slot.getSlotId() + "," + slot.getSlotName() + "," + slot.getParentShelfId() + "," + slot.getParentShelfName() + "," + slot.getParentSiteId() + "," + slot.getParentSiteName()+ "\n";
+            }
+            return csv;
+        }
+        else {
+            return csv;
+        }
+    }
 }

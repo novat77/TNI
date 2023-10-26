@@ -1,8 +1,10 @@
 package com.sincera.intern.service;
 
+import com.opencsv.CSVWriter;
 import com.sincera.intern.dto.ShelfDto;
 import com.sincera.intern.dto.SlotDto;
 import com.sincera.intern.model.Shelf;
+import com.sincera.intern.model.Site;
 import com.sincera.intern.model.Slot;
 import com.sincera.intern.repository.ShelfRepository;
 import com.sincera.intern.repository.SiteRepository;
@@ -13,6 +15,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -209,4 +213,31 @@ public class ShelfService {
         }
         return shelfDtoList;
     }
+
+    public String getShelfToCSV() {
+        List<Shelf> data = (List<Shelf>) shelfRepository.findAll(); // Fetch data from the repository
+
+        // Convert data to CSV format
+        StringWriter writer = new StringWriter();
+        try (CSVWriter csvWriter = new CSVWriter(writer)) {
+            String[] header = { "shelfId", "shelfName","status", "shelfType","vendor", "model","serialNumber", "parentSite","parentSiteInstId" }; // Replace with your column names
+            csvWriter.writeNext(header);
+
+            for (Shelf entity : data) {
+                String[] row = {String.valueOf(entity.getShelfId()),entity.getShelfName(),entity.getStatus(),entity.getShelfType(),entity.getVendor(), String.valueOf(entity.getModel()),entity.getSerialNumber(),entity.getParentSite(), String.valueOf(entity.getParentSiteInstId())}; // Replace with your entity fields
+                csvWriter.writeNext(row);
+            }
+        } catch (IOException e) {
+            // Handle the exception
+        }
+
+
+        log.info("CSV DATA==============================\n\n"+writer.toString());
+        String csvData = writer.toString();
+
+        // You can return the CSV data or save it to a file, depending on your use case
+        return csvData;
+    }
+
+
 }

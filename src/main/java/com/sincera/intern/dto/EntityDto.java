@@ -1,12 +1,22 @@
 package com.sincera.intern.dto;
 
-public class TruncateDto {
+public class EntityDto {
     private String errorMessage;
     private String tableName;
 
+    private String download;
+
+    public String getDownload() {
+        return download;
+    }
+
+    public void setDownload(String download) {
+        this.download = download;
+    }
+
     @Override
     public String toString() {
-        return "TruncateDto{" +
+        return "EntityDto{" +
                 "errorMessage='" + errorMessage + '\'' +
                 ", tableName='" + tableName + '\'' +
                 '}';

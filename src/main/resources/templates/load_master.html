@@ -7,16 +7,16 @@
 <body>
 <div th:replace="fragments :: tni_menu"></div>
 <div class="container" style="margin-left: 45px;display: flex;height: 100px;margin-top:68px;flex-direction: column;">
-  <h4 style="padding: 10px;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Load Master</h4>
+  <h4 style="padding: 10px;background: #5A5A5A;color: #fff;border: 1px solid #ccc;">Import Excel File</h4>
   <form action="#" th:action="@{/loadMaster}" method="post" enctype="multipart/form-data">
     <table border="0" cellpadding="2" class="table table-bordered">
       <tr>
-        <td>Select Master File (xlsx):</td>
+        <td>Select File (xlsx):</td>
         <td><input id="master" name="master" type="file" accept=".xlsx" aria-describedby="basic-addon3"/></td>
       </tr>
       <input th:value="${#authentication.name}" name="createdBy" type="hidden" />
     </table>
-    <div class="btn btn-primary btn-lg"><button type="submit"  class="btn btn-primary">Load Master</button></div>
+    <div class="btn btn-primary btn-lg"><button type="submit"  class="btn btn-primary">Import</button></div>
   </form>
   <span th:if="${msg1 != null}" th:text="${msg1}" style="color: red;"></span>
   <span th:if="${msg2 != null}" th:text="${msg2}" style="color: green;"></span>

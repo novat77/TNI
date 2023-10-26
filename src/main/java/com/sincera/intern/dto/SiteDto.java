@@ -1,13 +1,24 @@
 package com.sincera.intern.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SiteDto {
+
+    @JsonProperty("SEVERITY")
+    private String severity;
+    @JsonProperty("FIELD_NAME")
+    private String fieldName;
+    private String cluster_id;
     private Integer siteId;
+//    @JsonProperty("siteName")
     @NotEmpty(message = "SiteName cannot be empty")
     private String siteName;
     @NotEmpty(message = "Status cannot be empty")
@@ -25,6 +36,30 @@ public class SiteDto {
     private String createdBy;
     private LocalDate createdAt;
     private LocalDate lastModifiedAt;
+
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public String getCluster_id() {
+        return cluster_id;
+    }
+
+    public void setCluster_id(String cluster_id) {
+        this.cluster_id = cluster_id;
+    }
     public Integer getSiteId() {
         return siteId;
     }
