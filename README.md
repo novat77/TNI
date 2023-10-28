@@ -69,7 +69,10 @@ TNI is built on a robust architecture that ensures scalability and maintainabili
 
 ## Installation and Usage
 
-will update soon...
+The requred jar file is now avalable for downlode in the [release](https://github.com/adithya-ag/TNI/releases) section.
+once you downlode it, you need to run the jar file using the command "java -jar your-app.jar" so in our case "java -jar intern-telecom-inventory-1.0.0.jar".
+Note you have to be in the same folder/directory of that where the jar file is present to run this cmmand in the command prompt. For this eithre use the CD command to go to the requred directoory or after you are in the correct location in your file explorer where the jar file is present, in the path section enter "cmd" and press enter. Then run the above command to start/run the application.
+To terminate the app... go to the command prompt where the app is running and press "alt+c" this will terminate the application.
 
 ## License
 
