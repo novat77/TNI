@@ -16,7 +16,7 @@
 
 Welcome to the Telecom Network Inventory Management (TNI) project! This repository hosts a powerful Spring Boot web application designed for comprehensive inventory management. The application offers a wide range of features, from basic CRUD operations to advanced functionalities, including CSV conversion and seamless data import and export. Whether you need to manually input data or perform mass loading from Excel spreadsheets, this application simplifies the process and ensures data validation.To accommodate different users, we provide distinct permissions, authorities, and access levels within the application.
 
-Our team is also actively working on implementing an AI and Machine Learning-based duplicate data detection system, integrated with a Flask API for Python code execution. This innovative feature promises to further streamline data management within the Telecom Network Inventory Management system.
+The application also has implementation of AI and Machine Learning-based duplicate data detection system, integrated with a Flask API for Python code execution. This innovative feature promises to further streamline data management within the Telecom Network Inventory Management system.
 
 ## Languages and Technologies
 
@@ -89,21 +89,19 @@ I would like to express my sincere gratitude to [Sincera Consultancy](https://ww
 
 Special thanks to the mentors who provided invaluable insights and guidance throughout the project:
 
-- [Dhruv G](https://www.linkedin.com/in/dhruv-gupta-5300171b): Dhruv G played a pivotal role in the project, sharing extensive knowledge and expertise in both front-end and backend developement. To starting the application from scratch and building the web application on java springBoot MVC as a maven project .
+- [Dhruv G](https://www.linkedin.com/in/dhruv-gupta-5300171b): Dhruv sir has played a pivotal role in the project, sharing extensive knowledge and expertise in both front-end and backend developement. To starting the application from scratch and building the web application on java springBoot MVC as a maven project .
 
-- [Srivastsa G](https://www.linkedin.com/in/gorursrivatsa/): Srivastsa G's mentorship and guidance were instrumental in shaping the architecture and design of the TNI project.
+- [Srivastsa G](https://www.linkedin.com/in/gorursrivatsa/): Srivastsa sir's mentorship and guidance were instrumental in shaping the architecture and design of the TNI project.
 
-- [Kamal](https://www.linkedin.com/in/kamal-nath-tiwari-61143a67/): Kamal's contributions to the project, particularly in the areas of AI and Machine Learning integration, were highly commendable. Also was guid for Flask API integration significantly enhanced the application's functionality.
+- [Kamal](https://www.linkedin.com/in/kamal-nath-tiwari-61143a67/): Kamal sir's contributions to the project, particularly in the areas of AI and Machine Learning integration, were highly commendable. Also was guid for Flask API integration significantly enhanced the application's functionality.
 
 - [Prudvi](https://www.linkedin.com/in/prudvi-g-a4a871269/): Prudvi's expertise in back end development for reading, validating and loading the data into the DB after importing it form excel file.
 
-- [Anand GP](https://www.linkedin.com/in/anand-gp-58963b26/): Anand GP's dedication and attention to detail in inventory management have greatly improved the project's data accuracy and efficiency.
+- [Anand GP](https://www.linkedin.com/in/anand-gp-58963b26/): Anand sir's dedication and attention to detail in inventory management have greatly improved the project's data accuracy and efficiency.
  
 
 ## Conclusion
 
-The Telecom Network Inventory Management (TNI) project represents a significant step forward in the efficient management of telecommunications network assets. Our commitment to enhancing data accuracy, accessibility, and efficiency has driven this project from its inception.
+The Telecom Network Inventory Management (TNI) project represents a significant step forward in the efficient management of telecommunications network assets. The applications is commitment to enhancing data accuracy, accessibility, and efficiency has driven this project from its inception.
 
-As we move forward, we envision TNI continuing to evolve, with new features, improved performance, and increased flexibility. We are excited to make a positive impact on the telecommunications industry by providing a reliable and user-friendly solution for inventory management.
-
-We invite you to join us on this journey and contribute to the growth and success of the TNI project. Your feedback, ideas, and contributions are invaluable to us as we strive to meet the ever-changing needs of the telecommunications sector. Thank you for your support and interest in TNI, and we look forward to a promising future of network inventory management.
+As I move forward, I envision to developing better skills by working on TNI continuing to evolve, with new features, improved performance, and increased flexibility. Excited to make a positive impact on the telecommunications industry by providing a reliable and user-friendly solution for inventory management.
